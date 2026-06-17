@@ -140,28 +140,26 @@ function getCheckedValues(name) {
 ---
 (请一键复制此参数卡，发送给您的专属提示词架构师或其他专家库进行深度执行)`;
 
-            document.getElementById('codeOutput').innerText = template;
-            const consoleEl = document.getElementById('console');
-            consoleEl.style.display = 'block';
-            
-            // Trigger reflow for animation
-            void consoleEl.offsetWidth;
-            consoleEl.classList.add('visible');
-            
-            // Scroll to bottom softly
-            setTimeout(() => {
-                consoleEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }, 100);
-
-            // 【新增】：自动唤醒系统默认邮件客户端发信
-            const receiverEmail = "lhcjhac@gmail.com"; // 请您手动改成您真实的收件邮箱
+            // 把组装好的数据直接发往邮箱，不再显示黑客代码框
+            const receiverEmail = "lhcjhac@gmail.com"; 
             const subject = encodeURIComponent("【新订单】AXS MUSIC STUDIO - 客户需求卡");
             const body = encodeURIComponent(template);
             
-            // 延迟 800ms 唤起，让用户先看到弹出的炫酷代码控制台
+            // 把按钮文字变成提示状态，然后立刻拉起邮箱
+            const submitBtn = document.querySelector('.submit-btn');
+            const originalText = submitBtn.innerText;
+            submitBtn.innerText = "正在为您拉起邮件客户端...";
+            submitBtn.style.backgroundColor = "var(--accent)";
+            submitBtn.style.color = "var(--canvas-deep)";
+            
             setTimeout(() => {
                 window.location.href = `mailto:${receiverEmail}?subject=${subject}&body=${body}`;
-            }, 800);
+                // 3秒后恢复按钮状态
+                setTimeout(() => {
+                    submitBtn.innerText = originalText;
+                    submitBtn.style.backgroundColor = "var(--text-primary)";
+                }, 3000);
+            }, 500);
         }
 
         function copyToClipboard() {
