@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AXS MUSIC STUDIO - 中央枢纽</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --canvas-deep: #000000;
+            --surface-card: rgba(24, 24, 27, 0.6);
+            --accent: #818cf8;
+            --accent-gradient: linear-gradient(135deg, #c084fc, #818cf8);
+            --text-primary: #fafafa;
+            --text-secondary: #a1a1aa;
+            --hairline: rgba(255, 255, 255, 0.08);
+            --font-display: 'Outfit', sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--canvas-deep);
+            color: var(--text-primary);
+            font-family: var(--font-display);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: #818cf8;
+            filter: blur(150px);
+            z-index: 0;
+            opacity: 0.15;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .top-logo {
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 60px;
+            z-index: 10;
+        }
+        .top-logo span {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .portal-grid {
+            display: flex;
+            gap: 32px;
+            z-index: 10;
+        }
+
+        @media (max-width: 768px) {
+            .portal-grid { flex-direction: column; }
+        }
+
+        .portal-card {
+            background: var(--surface-card);
+            backdrop-filter: blur(24px);
+            border: 1px solid var(--hairline);
+            border-radius: 16px;
+            padding: 40px;
+            width: 320px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .portal-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: var(--accent-gradient);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .portal-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255,255,255,0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 20px rgba(129, 140, 248, 0.2);
+        }
+
+        .portal-card:hover::before {
+            opacity: 1;
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .card-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        .sys-status {
+            position: fixed;
+            bottom: 24px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            z-index: 10;
+        }
+        .sys-status::before {
+            content: '';
+            display: inline-block;
+            width: 8px; height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #10b981;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-logo">AXS <span>MUSIC STUDIO</span></div>
+
+    <div class="portal-grid">
+        <a href="AXS_Demand_WebForm/index.html" class="portal-card">
+            <span class="card-icon">🎯</span>
+            <div class="card-title">入口需求表单</div>
+            <div class="card-desc">客户前端系统。收集项目风格、情绪、配器等源头参数。</div>
+        </a>
+
+        <a href="AXS_Reverse_Engine/index.html" class="portal-card">
+            <span class="card-icon">🔬</span>
+            <div class="card-title">逆向质检雷达</div>
+            <div class="card-desc">品控拦截系统。分析 AI 输出干声，进行物理参数红线拦截。</div>
+        </a>
+    </div>
+
+    <div class="sys-status">SYSTEM ONLINE - ALL MODULES OPERATIONAL</div>
+
+</body>
+</html>
