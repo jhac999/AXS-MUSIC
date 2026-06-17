@@ -157,36 +157,52 @@ function getCheckedValues(name) {
                 consoleEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }, 100);
 
-            // 2. 发送到邮箱 (FormSubmit)
-            fetch("https://formsubmit.co/ajax/el/hayifo", {
-                method: "POST",
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({
-                    _subject: "【AXS MUSIC】新客户配置表提交",
-                    message: template
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if(data.success === "true" || data.success === true) {
-                    submitBtn.innerText = "发送成功！邮箱已收到";
-                    submitBtn.style.backgroundColor = "#10b981"; // 绿
-                    submitBtn.style.color = "#fff";
-                } else {
-                    submitBtn.innerText = "发送失败，请直接复制下方数据";
-                    submitBtn.style.backgroundColor = "#ef4444"; // 红
-                    submitBtn.style.pointerEvents = "auto";
-                }
-            })
-            .catch(error => {
+            // 2. 发送到邮箱 (FormSubmit) - 改为表单新标签页提交以绕过本地文件 CORS 限制
+            try {
+                const form = document.createElement('form');
+                form.action = "https://formsubmit.co/el/hayifo";
+                form.method = "POST";
+                form.target = "_blank"; // 在新标签页打开，避免覆盖当前页面且能处理可能的验证码
+
+                const subjectInput = document.createElement('input');
+                subjectInput.type = "hidden";
+                subjectInput.name = "_subject";
+                subjectInput.value = "【AXS MUSIC】新客户配置表提交";
+                form.appendChild(subjectInput);
+
+                const captchaInput = document.createElement('input');
+                captchaInput.type = "hidden";
+                captchaInput.name = "_captcha";
+                captchaInput.value = "false"; // 尝试禁用验证码
+                form.appendChild(captchaInput);
+
+                const messageInput = document.createElement('input');
+                messageInput.type = "hidden";
+                messageInput.name = "message";
+                messageInput.value = template;
+                form.appendChild(messageInput);
+
+                // 添加隐藏的 honeypot 防止垃圾邮件
+                const honeyInput = document.createElement('input');
+                honeyInput.type = "text";
+                honeyInput.name = "_honey";
+                honeyInput.style.display = "none";
+                form.appendChild(honeyInput);
+
+                document.body.appendChild(form);
+                form.submit();
+                document.body.removeChild(form);
+
+                submitBtn.innerText = "发送请求已提交（请查看新标签页）";
+                submitBtn.style.backgroundColor = "#10b981"; // 绿
+                submitBtn.style.color = "#fff";
+                submitBtn.style.pointerEvents = "auto";
+            } catch (error) {
                 console.error("Mail Error:", error);
-                submitBtn.innerText = "网络异常，请直接复制下方数据";
+                submitBtn.innerText = "生成失败，请直接复制下方数据";
                 submitBtn.style.backgroundColor = "#ef4444"; // 红
                 submitBtn.style.pointerEvents = "auto";
-            });
+            }
         }
 
         function copyToClipboard() {
