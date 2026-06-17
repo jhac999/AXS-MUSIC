@@ -140,49 +140,19 @@ function getCheckedValues(name) {
 ---
 (请一键复制此参数卡，发送给您的专属提示词架构师或其他专家库进行深度执行)`;
 
-            const receiverEmail = "lhcjhac@gmail.com"; 
+            // 【终极断舍离：抛弃所有发信玄学，回归最稳妥的本地展示模式】
+            document.getElementById('codeOutput').innerText = template;
+            const consoleEl = document.getElementById('console');
+            consoleEl.style.display = 'block';
             
-            // 把按钮文字变成提示状态
-            const submitBtn = document.querySelector('.submit-btn');
-            const originalText = submitBtn.innerText;
-            submitBtn.innerText = "正在通过云端星门发送...";
-            submitBtn.style.backgroundColor = "var(--accent)";
-            submitBtn.style.color = "var(--canvas-deep)";
+            // 触发动画重绘
+            void consoleEl.offsetWidth;
+            consoleEl.classList.add('visible');
             
-            // 使用完全免注册的 FormSubmit 云端接口实现真实静默发送
-            fetch(`https://formsubmit.co/ajax/${receiverEmail}`, {
-                method: "POST",
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({
-                    _subject: "【新订单】AXS MUSIC STUDIO - 客户需求卡",
-                    _template: "box",
-                    message: template
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                submitBtn.innerText = "发送成功！已投递至主理人信箱";
-                submitBtn.style.backgroundColor = "#10b981"; // 成功变绿
-                submitBtn.style.color = "#fff";
-                setTimeout(() => {
-                    submitBtn.innerText = originalText;
-                    submitBtn.style.backgroundColor = "var(--text-primary)";
-                    submitBtn.style.color = "var(--canvas-deep)";
-                }, 5000);
-            })
-            .catch(error => {
-                console.error(error);
-                submitBtn.innerText = "网络拥堵，请稍后重试";
-                submitBtn.style.backgroundColor = "#ef4444"; // 失败变红
-                setTimeout(() => {
-                    submitBtn.innerText = originalText;
-                    submitBtn.style.backgroundColor = "var(--text-primary)";
-                    submitBtn.style.color = "var(--canvas-deep)";
-                }, 5000);
-            });
+            // 丝滑滚动到最底部展示代码
+            setTimeout(() => {
+                consoleEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
         }
 
         function copyToClipboard() {
