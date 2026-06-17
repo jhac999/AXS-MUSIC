@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AXS MUSIC STUDIO - 音乐风格定位问卷</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* AXS Cinematic Dark Theme Tokens */
+            --canvas: #09090b;
+            --canvas-deep: #000000;
+            --surface-card: rgba(24, 24, 27, 0.6);
+            --surface-input: rgba(9, 9, 11, 0.8);
+            
+            --accent: #818cf8;
+            --accent-glow: rgba(129, 140, 248, 0.2);
+            --accent-gradient: linear-gradient(135deg, #c084fc, #818cf8);
+            
+            --text-primary: #fafafa;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            
+            --hairline: rgba(255, 255, 255, 0.08);
+            --hairline-strong: rgba(255, 255, 255, 0.15);
+            
+            --radius-md: 8px;
+            --radius-lg: 16px;
+            --radius-pill: 9999px;
+            
+            --font-display: 'Outfit', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--canvas-deep);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            margin: 0;
+            padding: 48px 20px 100px 20px;
+            overflow-x: hidden;
+        }
+
+        /* 置顶特效 Logo */
+        .top-logo {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 32px;
+            cursor: default;
+            position: relative;
+            animation: subtle-glitch 5s infinite;
+        }
+        
+        @keyframes subtle-glitch {
+            0%, 90%, 100% { text-shadow: 0 0 0 rgba(0,255,255,0), 0 0 0 rgba(255,0,0,0); transform: translate(0, 0); }
+            92% { text-shadow: 2px 0 0 rgba(0,255,255,0.7), -2px 0 0 rgba(255,0,0,0.7); transform: translate(-1px, 0); }
+            95% { text-shadow: -2px 0 0 rgba(0,255,255,0.7), 2px 0 0 rgba(255,0,0,0.7); transform: translate(1px, 0); }
+            98% { text-shadow: 2px 0 0 rgba(0,255,255,0.7), -2px 0 0 rgba(255,0,0,0.7); transform: translate(-1px, 0); }
+        }
+
+        .top-logo span {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* 赛博极光背景氛围装饰 */
+        body::before, body::after {
+            content: '';
+            position: fixed;
+            width: 800px;
+            height: 800px;
+            border-radius: 50%;
+            filter: blur(140px);
+            z-index: 0;
+            opacity: 0.12;
+            pointer-events: none;
+        }
+        body::before {
+            top: -300px; left: -200px;
+            background: #c084fc;
+        }
+        body::after {
+            bottom: -300px; right: -200px;
+            background: #818cf8;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 860px;
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+        .form-header h2 {
+            font-family: var(--font-display);
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+        .form-header p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            letter-spacing: 0.02em;
+        }
+
+        .glass-panel {
+            background: var(--surface-card);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--hairline);
+            border-radius: var(--radius-lg);
+            padding: 48px;
+            box-shadow: 0 32px 64px rgba(0, 0, 0, 0.4);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 36px;
+        }
+
+        label.section-question {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: 0.03em;
+            display: block;
+            border-left: 3px solid var(--accent);
+            padding-left: 12px;
+            margin-bottom: 4px;
+        }
+        
+        .question-subtext {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-left: 15px;
+            margin-top: -8px;
+            margin-bottom: 8px;
+        }
+
+        .sub-category {
+            font-family: var(--font-display);
+            font-size: 0.95rem;
+            color: var(--accent);
+            margin-top: 16px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        input[type="text"] {
+            background: var(--surface-input);
+            border: 1px solid var(--hairline);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            padding: 14px 16px;
+            border-radius: var(--radius-md);
+            outline: none;
+            transition: all 0.2s ease;
+            width: 100%;
+            margin-bottom: 8px;
+        }
+        input[type="text"]:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+            background: #000;
+        }
+
+        /* Checkbox & Radio Grid */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--surface-input);
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--hairline);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            user-select: none;
+        }
+        .option-label:hover {
+            border-color: var(--hairline-strong);
+            background: rgba(255,255,255,0.05);
+            color: var(--text-primary);
+        }
+        .option-label input[type="checkbox"],
+        .option-label input[type="radio"] {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--text-muted);
+            border-radius: 4px;
+            background: transparent;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+        .option-label input[type="radio"] {
+            border-radius: 50%;
+        }
+        .option-label input:checked {
+            border-color: var(--accent);
+            background: var(--accent);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+        .option-label input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            color: var(--canvas-deep);
+            font-size: 14px;
+            font-weight: 800;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .option-label input[type="radio"]:checked::after {
+            content: '';
+            position: absolute;
+            width: 8px; height: 8px;
+            background: var(--canvas-deep);
+            border-radius: 50%;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        /* 当选中时，label本身的样式变亮 */
+        .option-label:has(input:checked) {
+            border-color: var(--accent);
+            background: rgba(129, 140, 248, 0.05);
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: var(--text-primary);
+            color: var(--canvas-deep);
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 20px;
+            border: none;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 24px;
+        }
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .output-console {
+            margin-top: 32px;
+            background: var(--canvas-deep);
+            border: 1px solid var(--hairline-strong);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .output-console.visible {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .console-header {
+            background: rgba(255,255,255,0.02);
+            border-bottom: 1px solid var(--hairline);
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .console-title {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .console-title::before {
+            content: '';
+            display: inline-block;
+            width: 8px; height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--accent);
+        }
+        
+        .copy-btn {
+            background: transparent;
+            border: 1px solid var(--hairline-strong);
+            color: var(--text-secondary);
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .copy-btn:hover {
+            background: var(--text-primary);
+            color: var(--canvas-deep);
+            border-color: var(--text-primary);
+        }
+
+        .console-code {
+            padding: 24px;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: var(--accent);
+            line-height: 1.7;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 24px 16px 80px 16px; }
+            .top-logo { font-size: 1.5rem; margin-bottom: 24px; }
+            .options-grid { grid-template-columns: 1fr; }
+            .form-header h2 { font-size: 2rem; }
+            .glass-panel { padding: 24px 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- 置顶特效 Logo -->
+        <div class="top-logo">AXS <span>MUSIC STUDIO</span></div>
+
+        <header class="form-header">
+            <h2>客户需求配置表</h2>
+            <p>音乐风格定位与规格确认</p>
+        </header>
+
+        <form id="music-questionnaire" class="glass-panel">
+
+            <!-- 0. 基础信息与用途 -->
+            <div class="form-group">
+                <label class="section-question">0. 基础信息与用途</label>
+                
+                <div class="sub-category">歌曲用途与时长</div>
+                <div class="options-grid">
+                    <label class="option-label"><input type="radio" name="usage" value="短视频BGM（约30秒）">短视频BGM（约30秒）</label>
+                    <label class="option-label"><input type="radio" name="usage" value="完整流行单曲（3-4分钟）">完整单曲（3-4分钟）</label>
+                    <label class="option-label"><input type="radio" name="usage" value="影视/游戏配乐">影视/游戏配乐</label>
+                    <label class="option-label"><input type="radio" name="usage" value="不确定">不确定</label>
+                </div>
+                <input type="text" id="usage_other" placeholder="其他用途说明..." style="margin-bottom: 16px;">
+
+                <div class="sub-category">人声类型与语言要求</div>
+                <div class="options-grid">
+                    <label class="option-label"><input type="checkbox" name="vocal_type" value="纯音乐（无需人声）">纯音乐（无需人声）</label>
+                    <label class="option-label"><input type="checkbox" name="vocal_type" value="男声">男声</label>
+                    <label class="option-label"><input type="checkbox" name="vocal_type" value="女声">女声</label>
+                    <label class="option-label"><input type="checkbox" name="vocal_type" value="大合唱">大合唱</label>
+                    <label class="option-label"><input type="checkbox" name="vocal_type" value="中文演唱">中文演唱</label>
+                    <label class="option-label"><input type="checkbox" name="vocal_type" value="英文演唱">英文演唱</label>
+                </div>
+                <input type="text" id="vocal_other" placeholder="其他语言或人声要求补充...">
+            </div>
+
+            <!-- 1. 参考曲目 (想要的风格) -->
+            <div class="form-group">
+                <label class="section-question">1. 那首歌的风格是你现在想要的</label>
+                <div class="question-subtext">（请提供1-3首参考曲目 + 歌手名，如有明确链接或曲名也可填于此）</div>
+                <input type="text" id="ref_style_1" placeholder="① 例如：The Weeknd - Blinding Lights">
+                <input type="text" id="ref_style_2" placeholder="②">
+                <input type="text" id="ref_style_3" placeholder="③">
+            </div>
+
+            <!-- 2. 主奏乐器 -->
+            <div class="form-group">
+                <label class="section-question">2. 配器上有没有要求主奏乐器的要求</label>
+                <div class="options-grid">
+                    <label class="option-label"><input type="checkbox" name="instrument" value="原声钢琴">原声钢琴</label>
+                    <label class="option-label"><input type="checkbox" name="instrument" value="电子键盘/电钢">电子键盘/电钢</label>
+                    <label class="option-label"><input type="checkbox" name="instrument" value="木吉他（原声）">木吉他（原声）</label>
+                    <label class="option-label"><input type="checkbox" name="instrument" value="电吉他">电吉他</label>
+                    <label class="option-label"><input type="checkbox" name="instrument" value="弦乐群（大合奏）">弦乐群（大合奏）</label>
+                    <label class="option-label"><input type="checkbox" name="instrument" value="独奏弦乐（如小提琴）">独奏弦乐（如小提琴）</label>
+                    <label class="option-label"><input type="checkbox" name="instrument" value="铜管乐（小号/长号等）">铜管乐（小号/长号等）</label>
+                    <label class="option-label"><input type="checkbox" name="instrument" value="木管乐（萨克斯/长笛等）">木管乐（萨克斯/长笛等）</label>
+                    <label class="option-label"><input type="checkbox" name="instrument" value="电子合成器（Synth）">电子合成器（Synth）</label>
+                    <label class="option-label"><input type="checkbox" name="instrument" value="原声架子鼓">原声架子鼓</label>
+                    <label class="option-label"><input type="checkbox" name="instrument" value="电子鼓/鼓机">电子鼓/鼓机</label>
+                    <label class="option-label"><input type="checkbox" name="instrument" value="电贝斯/原声贝斯">电贝斯/原声贝斯</label>
+                    <label class="option-label"><input type="checkbox" name="instrument" value="808/电子低音">808/电子低音</label>
+                    <label class="option-label"><input type="checkbox" name="instrument" value="人声和声/采样">人声和声/采样</label>
+                    <label class="option-label"><input type="checkbox" name="instrument" value="无特别要求（制作人推荐）">无特别要求（制作人推荐）</label>
+                </div>
+                <input type="text" id="instrument_other" placeholder="其他配器或特殊音色要求补充..." style="margin-top: 8px;">
+            </div>
+
+            <!-- 3. 结构与段落处理 -->
+            <div class="form-group">
+                <label class="section-question">3. 主歌与副歌感觉</label>
+                
+                <div class="sub-category">主歌感觉</div>
+                <div class="options-grid">
+                    <label class="option-label"><input type="checkbox" name="verse_vibe" value="安静/内敛">安静/内敛</label>
+                    <label class="option-label"><input type="checkbox" name="verse_vibe" value="叙事感">叙事感</label>
+                    <label class="option-label"><input type="checkbox" name="verse_vibe" value="小律动">小律动</label>
+                    <label class="option-label"><input type="checkbox" name="verse_vibe" value="温暖/柔和">温暖/柔和</label>
+                    <label class="option-label"><input type="checkbox" name="verse_vibe" value="冷清/空旷">冷清/空旷</label>
+                    <label class="option-label"><input type="checkbox" name="verse_vibe" value="简约/留白">简约/留白</label>
+                </div>
+                <input type="text" id="verse_other" placeholder="其他补充..." style="margin-bottom: 16px;">
+
+                <div class="sub-category">副歌感觉</div>
+                <div class="options-grid">
+                    <label class="option-label"><input type="checkbox" name="chorus_vibe" value="爆发/释放">爆发/释放</label>
+                    <label class="option-label"><input type="checkbox" name="chorus_vibe" value="温暖/明亮">温暖/明亮</label>
+                    <label class="option-label"><input type="checkbox" name="chorus_vibe" value="推进感（层层递进）">推进感（层层递进）</label>
+                    <label class="option-label"><input type="checkbox" name="chorus_vibe" value="伤感/揪心">伤感/揪心</label>
+                    <label class="option-label"><input type="checkbox" name="chorus_vibe" value="激昂/热血">激昂/热血</label>
+                    <label class="option-label"><input type="checkbox" name="chorus_vibe" value="空灵/飘渺">空灵/飘渺</label>
+                    <label class="option-label"><input type="checkbox" name="chorus_vibe" value="和声叠加（人声加厚）">和声叠加（人声加厚）</label>
+                </div>
+                <input type="text" id="chorus_other" placeholder="其他补充...">
+            </div>
+
+            <!-- 4. 过渡与结束方式 -->
+            <div class="form-group">
+                <label class="section-question">4. 细节：过渡与歌曲结束方式</label>
+                
+                <div class="sub-category">主歌→副歌过渡</div>
+                <div class="options-grid">
+                    <label class="option-label"><input type="radio" name="transition_vibe" value="直接进">直接进</label>
+                    <label class="option-label"><input type="radio" name="transition_vibe" value="Pre-Chorus推进">Pre-Chorus推进</label>
+                    <label class="option-label"><input type="radio" name="transition_vibe" value="器乐渐强">器乐渐强</label>
+                    <label class="option-label"><input type="radio" name="transition_vibe" value="停顿后爆发">停顿后爆发</label>
+                    <label class="option-label"><input type="radio" name="transition_vibe" value="不确定">不确定</label>
+                </div>
+                <input type="text" id="transition_other" placeholder="其他过渡方式补充..." style="margin-bottom: 16px;">
+
+                <div class="sub-category">歌曲结束方式</div>
+                <div class="options-grid">
+                    <label class="option-label"><input type="radio" name="ending_vibe" value="淡出">淡出</label>
+                    <label class="option-label"><input type="radio" name="ending_vibe" value="器乐逐渐减少">器乐逐渐减少</label>
+                    <label class="option-label"><input type="radio" name="ending_vibe" value="人声拉长尾音">人声拉长尾音</label>
+                    <label class="option-label"><input type="radio" name="ending_vibe" value="自然结束（无渐弱）">自然结束（无渐弱）</label>
+                    <label class="option-label"><input type="radio" name="ending_vibe" value="戛然而止">戛然而止</label>
+                    <label class="option-label"><input type="radio" name="ending_vibe" value="不确定">不确定</label>
+                </div>
+                <input type="text" id="ending_other" placeholder="其他结束方式补充...">
+            </div>
+
+
+
+            <!-- 5. 整体音乐风格 -->
+            <div class="form-group">
+                <label class="section-question">5. 整体音乐风格</label>
+                <div class="question-subtext">（可多选组合，如“国风+电子+流行”）</div>
+                
+                <div class="sub-category">流行类</div>
+                <div class="options-grid">
+                    <label class="option-label"><input type="checkbox" name="genre" value="Pop（流行）">Pop（流行）</label>
+                    <label class="option-label"><input type="checkbox" name="genre" value="Synth Pop（合成器流行）">Synth Pop（合成器流行）</label>
+                    <label class="option-label"><input type="checkbox" name="genre" value="Indie Pop（独立流行）">Indie Pop（独立流行）</label>
+                    <label class="option-label"><input type="checkbox" name="genre" value="Electropop（电子流行）">Electropop（电子流行）</label>
+                    <label class="option-label"><input type="checkbox" name="genre" value="J-Pop / K-Pop（日韩流行）">J-Pop / K-Pop（日韩流行）</label>
+                </div>
+
+                <div class="sub-category">摇滚类</div>
+                <div class="options-grid">
+                    <label class="option-label"><input type="checkbox" name="genre" value="Rock（摇滚）">Rock（摇滚）</label>
+                    <label class="option-label"><input type="checkbox" name="genre" value="Alternative Rock（另类摇滚）">Alternative Rock（另类摇滚）</label>
+                    <label class="option-label"><input type="checkbox" name="genre" value="Pop-Rock（流行摇滚）">Pop-Rock（流行摇滚）</label>
+                    <label class="option-label"><input type="checkbox" name="genre" value="Punk Rock（朋克摇滚）">Punk Rock（朋克摇滚）</label>
+                    <label class="option-label"><input type="checkbox" name="genre" value="Alternative Metal（另类金属）">Alternative Metal（另类金属）</label>
+                </div>
+
+                <div class="sub-category">电子类</div>
+                <div class="options-grid">
+                    <label class="option-label"><input type="checkbox" name="genre" value="EDM（电子舞曲）">EDM（电子舞曲）</label>
+                    <label class="option-label"><input type="checkbox" name="genre" value="House（浩室舞曲）">House（浩室舞曲）</label>
+                    <label class="option-label"><input type="checkbox" name="genre" value="Techno（高科技舞曲）">Techno（高科技舞曲）</label>
+                    <label class="option-label"><input type="checkbox" name="genre" value="Trance（迷幻舞曲）">Trance（迷幻舞曲）</label>
+                    <label class="option-label"><input type="checkbox" name="genre" value="Drum & Bass（鼓动贝斯）">Drum & Bass（鼓动贝斯）</label>
+                    <label class="option-label"><input type="checkbox" name="genre" value="Ambient（氛围音乐）">Ambient（氛围音乐）</label>
+                    <label class="option-label"><input type="checkbox" name="genre" value="Lo-fi（低保真）">Lo-fi（低保真）</label>
+                    <label class="option-label"><input type="checkbox" name="genre" value="Synthwave（合成器浪潮）">Synthwave（合成器浪潮）</label>
+                </div>
+
+                <div class="sub-category">民谣/乡村类</div>
+                <div class="options-grid">
+                    <label class="option-label"><input type="checkbox" name="genre" value="Folk（民谣）">Folk（民谣）</label>
+                    <label class="option-label"><input type="checkbox" name="genre" value="Country & Americana（乡村/美式民谣）">Country & Americana（乡村/美式民谣）</label>
+                    <label class="option-label"><input type="checkbox" name="genre" value="Indie Folk（独立民谣）">Indie Folk（独立民谣）</label>
+                </div>
+
+                <div class="sub-category">R&B / 灵魂乐 / 爵士类</div>
+                <div class="options-grid">
+                    <label class="option-label"><input type="checkbox" name="genre" value="R&B（节奏布鲁斯）">R&B（节奏布鲁斯）</label>
+                    <label class="option-label"><input type="checkbox" name="genre" value="Soul（灵魂乐）">Soul（灵魂乐）</label>
+                    <label class="option-label"><input type="checkbox" name="genre" value="Jazz（爵士）">Jazz（爵士）</label>
+                    <label class="option-label"><input type="checkbox" name="genre" value="Blues（蓝调）">Blues（蓝调）</label>
+                    <label class="option-label"><input type="checkbox" name="genre" value="Ballad（抒情歌谣）">Ballad（抒情歌谣）</label>
+                </div>
+
+                <div class="sub-category">嘻哈/说唱类</div>
+                <div class="options-grid">
+                    <label class="option-label"><input type="checkbox" name="genre" value="Hip-Hop（嘻哈说唱）">Hip-Hop（嘻哈说唱）</label>
+                    <label class="option-label"><input type="checkbox" name="genre" value="Boom Bap（老派硬核说唱）">Boom Bap（老派硬核说唱）</label>
+                    <label class="option-label"><input type="checkbox" name="genre" value="Trap（陷阱说唱）">Trap（陷阱说唱）</label>
+                    <label class="option-label"><input type="checkbox" name="genre" value="Drill（钻头说唱）">Drill（钻头说唱）</label>
+                </div>
+
+                <div class="sub-category">影视/古典/世界音乐类</div>
+                <div class="options-grid">
+                    <label class="option-label"><input type="checkbox" name="genre" value="Classical Cinematic（古典电影音乐）">Classical Cinematic（古典电影音乐）</label>
+                    <label class="option-label"><input type="checkbox" name="genre" value="Orchestra（管弦乐）">Orchestra（管弦乐）</label>
+                    <label class="option-label"><input type="checkbox" name="genre" value="Baroque（巴洛克）">Baroque（巴洛克）</label>
+                    <label class="option-label"><input type="checkbox" name="genre" value="African（非洲音乐）">African（非洲音乐）</label>
+                    <label class="option-label"><input type="checkbox" name="genre" value="Reggae（雷鬼）">Reggae（雷鬼）</label>
+                    <label class="option-label"><input type="checkbox" name="genre" value="Gospel（福音音乐）">Gospel（福音音乐）</label>
+                </div>
+
+                <div class="sub-category">国风/民族类 & 其他</div>
+                <div class="options-grid">
+                    <label class="option-label"><input type="checkbox" name="genre" value="中国风流行">中国风流行</label>
+                    <label class="option-label"><input type="checkbox" name="genre" value="古风">古风</label>
+                    <label class="option-label"><input type="checkbox" name="genre" value="民族融合">民族融合</label>
+                </div>
+                <input type="text" id="genre_other" placeholder="风格库中如无匹配项，请在此填写你的描述..." style="margin-top: 8px;">
+            </div>
+
+            <!-- 6. 节奏感觉 -->
+            <div class="form-group">
+                <label class="section-question">6. 这首歌的节奏感觉是？</label>
+                <div class="options-grid">
+                    <label class="option-label"><input type="radio" name="tempo" value="舒缓（60-80 BPM）">舒缓（60-80 BPM）</label>
+                    <label class="option-label"><input type="radio" name="tempo" value="中速（80-100 BPM）">中速（80-100 BPM）</label>
+                    <label class="option-label"><input type="radio" name="tempo" value="轻快（100-120 BPM）">轻快（100-120 BPM）</label>
+                    <label class="option-label"><input type="radio" name="tempo" value="较快（120 BPM以上）">较快（120 BPM以上）</label>
+                    <label class="option-label"><input type="radio" name="tempo" value="不确定">不确定</label>
+                </div>
+            </div>
+
+            <!-- 6.1 调性与和声 -->
+            <div class="form-group">
+                <label class="section-question">6.1 调性与和声（Key & Harmony）</label>
+                
+                <div class="sub-category">调性（Key）</div>
+                <div style="display: flex; gap: 16px; align-items: center; margin-bottom: 16px; flex-wrap: wrap;">
+                    <input type="text" id="key_input" placeholder="填空（例如：C大调, Am小调等）" style="flex: 1; min-width: 200px; margin-bottom: 0;">
+                    <label class="option-label" style="margin-bottom: 0; white-space: nowrap;"><input type="checkbox" id="key_unknown" value="不确定（由制作人决定）">不确定（由制作人决定）</label>
+                </div>
+
+                <div class="sub-category">调式类型</div>
+                <div class="options-grid">
+                    <label class="option-label"><input type="radio" name="mode_type" value="大调（明亮）">大调（明亮）</label>
+                    <label class="option-label"><input type="radio" name="mode_type" value="小调（情绪）">小调（情绪）</label>
+                    <label class="option-label"><input type="radio" name="mode_type" value="五声音阶（国风/东方）">五声音阶（国风/东方）</label>
+                    <label class="option-label"><input type="radio" name="mode_type" value="教会调式（影视感）">教会调式（影视感）</label>
+                    <label class="option-label"><input type="radio" name="mode_type" value="无明确要求">无明确要求</label>
+                </div>
+
+                <div class="sub-category">和声复杂度</div>
+                <div class="options-grid">
+                    <label class="option-label"><input type="radio" name="harmony_complex" value="简单（I–V–vi–IV）">简单（I–V–vi–IV）</label>
+                    <label class="option-label"><input type="radio" name="harmony_complex" value="中等（含副属和弦）">中等（含副属和弦）</label>
+                    <label class="option-label"><input type="radio" name="harmony_complex" value="复杂（转调/借用和弦）">复杂（转调/借用和弦）</label>
+                    <label class="option-label"><input type="radio" name="harmony_complex" value="影视级复杂和声">影视级复杂和声</label>
+                </div>
+
+                <div class="sub-category">是否允许转调</div>
+                <div class="options-grid">
+                    <label class="option-label"><input type="radio" name="modulation" value="允许">允许</label>
+                    <label class="option-label"><input type="radio" name="modulation" value="不允许">不允许</label>
+                    <label class="option-label"><input type="radio" name="modulation" value="仅副歌升调">仅副歌升调</label>
+                </div>
+            </div>
+
+            <!-- 7. 核心情绪 -->
+            <div class="form-group">
+                <label class="section-question">7. 你希望这首歌传达的核心情绪是？</label>
+                <div class="question-subtext">（建议各选1-2个）</div>
+                
+                <div class="sub-category">主歌核心情绪</div>
+                <div class="options-grid">
+                    <label class="option-label"><input type="checkbox" name="verse_emotion" value="治愈">治愈</label>
+                    <label class="option-label"><input type="checkbox" name="verse_emotion" value="孤独">孤独</label>
+                    <label class="option-label"><input type="checkbox" name="verse_emotion" value="浪漫">浪漫</label>
+                    <label class="option-label"><input type="checkbox" name="verse_emotion" value="怀念">怀念</label>
+                    <label class="option-label"><input type="checkbox" name="verse_emotion" value="温暖">温暖</label>
+                    <label class="option-label"><input type="checkbox" name="verse_emotion" value="无奈">无奈</label>
+                    <label class="option-label"><input type="checkbox" name="verse_emotion" value="迷茫">迷茫</label>
+                    <label class="option-label"><input type="checkbox" name="verse_emotion" value="甜蜜">甜蜜</label>
+                </div>
+                <input type="text" id="verse_emotion_other" placeholder="主歌其他情绪补充..." style="margin-bottom: 16px;">
+
+                <div class="sub-category">副歌核心情绪</div>
+                <div class="options-grid">
+                    <label class="option-label"><input type="checkbox" name="chorus_emotion" value="释怀">释怀</label>
+                    <label class="option-label"><input type="checkbox" name="chorus_emotion" value="力量">力量</label>
+                    <label class="option-label"><input type="checkbox" name="chorus_emotion" value="倔强">倔强</label>
+                    <label class="option-label"><input type="checkbox" name="chorus_emotion" value="绝望">绝望</label>
+                    <label class="option-label"><input type="checkbox" name="chorus_emotion" value="热血">热血</label>
+                    <label class="option-label"><input type="checkbox" name="chorus_emotion" value="洒脱">洒脱</label>
+                    <label class="option-label"><input type="checkbox" name="chorus_emotion" value="撕裂">撕裂</label>
+                    <label class="option-label"><input type="checkbox" name="chorus_emotion" value="狂欢">狂欢</label>
+                </div>
+                <input type="text" id="chorus_emotion_other" placeholder="副歌其他情绪补充...">
+            
+            <!-- 8. 提供歌词 -->
+            <div class="form-group">
+                <label class="section-question">8. 已有歌词提供（如有）</label>
+                <div class="question-subtext">
+                    （请将您的歌词粘贴在下方，建议参考以下段落规范：<br>
+                    【A段 - 主歌1】<br>
+                    【B段 - 副歌1】<br>
+                    【A段 - 主歌2】<br>
+                    【B段 - 副歌2】<br>
+                    【C段 - 桥段】（如有））
+                </div>
+                <textarea id="lyrics_full" placeholder="请在此粘贴歌词..." style="width: 100%; background: var(--surface-light); border: 1px solid var(--hairline); color: var(--text-primary); padding: 12px 16px; border-radius: 8px; margin-bottom: 12px; font-family: inherit; font-size: 0.95rem; resize: vertical; min-height: 200px; line-height: 1.6;"></textarea>
+            </div>
+
+
+
+            <!-- 备注说明文字 -->
+            <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 16px; border-left: 2px solid var(--text-muted); padding-left: 12px;">
+                <strong>备注：</strong><br>
+                - 以上选项可多选，也可不选直接备注说明。<br>
+                - 允许组合风格，如“国风+电子+流行”。
+            </div>
+
+            <!-- 输出区域 -->
+            <button type="button" class="submit-btn" onclick="submitForm()">感谢提交</button>
+            
+            <div class="output-console" id="console">
+                <div class="console-header">
+                    <div class="console-title">REQUIREMENT_DATA.md</div>
+                    <button type="button" class="copy-btn" onclick="copyToClipboard()">COPY DATA</button>
+                </div>
+                <div class="console-code" id="codeOutput"></div>
+            </div>
+            
+        </form>
+    </div>
+
+    <script>
+        function getCheckedValues(name) {
+            return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(el => el.value);
+        }
+
+        function submitForm() {
+            // 0. 基础设定
+            const usageRadio = document.querySelector('input[name="usage"]:checked');
+            let usageStr = usageRadio ? usageRadio.value : '未提供';
+            const usageOther = document.getElementById('usage_other').value;
+            if (usageOther) usageStr = usageOther;
+
+            let vocals = getCheckedValues('vocal_type');
+            const vocalOther = document.getElementById('vocal_other').value;
+            if (vocalOther) vocals.push(vocalOther);
+            const vocalStr = vocals.length > 0 ? vocals.join(', ') : '未提供';
+
+            // 1. 想要的风格参考
+            const refStyle1 = document.getElementById('ref_style_1').value;
+            const refStyle2 = document.getElementById('ref_style_2').value;
+            const refStyle3 = document.getElementById('ref_style_3').value;
+            const refStyles = [refStyle1, refStyle2, refStyle3].filter(Boolean).join(' / ') || '未提供';
+
+            // 2. 主奏乐器
+            let instruments = getCheckedValues('instrument');
+            const instOther = document.getElementById('instrument_other').value;
+            if (instOther) instruments.push(instOther);
+            const instrumentsStr = instruments.length > 0 ? instruments.join(', ') : '未提供';
+
+            // 3. 主歌感觉
+            let verseVibe = getCheckedValues('verse_vibe');
+            const verseOther = document.getElementById('verse_other').value;
+            if (verseOther) verseVibe.push(verseOther);
+            const verseStr = verseVibe.length > 0 ? verseVibe.join(', ') : '未提供';
+
+            // 副歌感觉
+            let chorusVibe = getCheckedValues('chorus_vibe');
+            const chorusOther = document.getElementById('chorus_other').value;
+            if (chorusOther) chorusVibe.push(chorusOther);
+            const chorusStr = chorusVibe.length > 0 ? chorusVibe.join(', ') : '未提供';
+
+            // 4. 过渡与结束方式
+            const transitionRadio = document.querySelector('input[name="transition_vibe"]:checked');
+            let transitionStr = transitionRadio ? transitionRadio.value : '未提供';
+            const transitionOther = document.getElementById('transition_other').value;
+            if (transitionOther) transitionStr = transitionOther;
+
+            const endingRadio = document.querySelector('input[name="ending_vibe"]:checked');
+            let endingStr = endingRadio ? endingRadio.value : '未提供';
+            const endingOther = document.getElementById('ending_other').value;
+            if (endingOther) endingStr = endingOther;
+
+            // 5. 整体音乐风格
+            let genres = getCheckedValues('genre');
+            const genreOther = document.getElementById('genre_other').value;
+            if (genreOther) genres.push(genreOther);
+            const genreStr = genres.length > 0 ? genres.join(' + ') : '未提供';
+
+            // 6. 节奏感觉
+            const tempoRadio = document.querySelector('input[name="tempo"]:checked');
+            const tempoStr = tempoRadio ? tempoRadio.value : '未提供';
+
+            // 6.1 调性与和声
+            const keyUnknown = document.getElementById('key_unknown').checked;
+            const keyInput = document.getElementById('key_input').value.trim();
+            const keyStr = keyUnknown ? '不确定（由制作人决定）' : (keyInput || '未提供');
+
+            const modeRadio = document.querySelector('input[name="mode_type"]:checked');
+            const modeStr = modeRadio ? modeRadio.value : '未提供';
+
+            const harmonyRadio = document.querySelector('input[name="harmony_complex"]:checked');
+            const harmonyStr = harmonyRadio ? harmonyRadio.value : '未提供';
+
+            const modulationRadio = document.querySelector('input[name="modulation"]:checked');
+            const modulationStr = modulationRadio ? modulationRadio.value : '未提供';
+
+            // 7. 核心情绪
+            let verseEmotions = getCheckedValues('verse_emotion');
+            const verseEmoOther = document.getElementById('verse_emotion_other').value;
+            if (verseEmoOther) verseEmotions.push(verseEmoOther);
+            const verseEmotionStr = verseEmotions.length > 0 ? verseEmotions.join(', ') : '未提供';
+
+            let chorusEmotions = getCheckedValues('chorus_emotion');
+            const chorusEmoOther = document.getElementById('chorus_emotion_other').value;
+            if (chorusEmoOther) chorusEmotions.push(chorusEmoOther);
+            const chorusEmotionStr = chorusEmotions.length > 0 ? chorusEmotions.join(', ') : '未提供';
+
+            // 8. 提供的歌词
+            const lyricsFull = document.getElementById('lyrics_full').value.trim();
+            let lyricsStr = '';
+            if (lyricsFull) {
+                lyricsStr = `\n   ${lyricsFull.replace(/\\n/g, '\\n   ')}\n`;
+            } else {
+                lyricsStr = '- 未提供';
+            }
+
+
+
+            const template = `【客户需求参数卡 - 音乐风格定位问卷】
+
+0. 基础设定：
+   - [用途与时长]：${usageStr}
+   - [人声与语言]：${vocalStr}
+
+1. 目标风格参考：
+   - ${refStyles}
+
+2. 主奏乐器及配器要求：
+   - ${instrumentsStr}
+
+3. 结构与情绪起伏：
+   - [主歌感觉]：${verseStr}
+   - [副歌感觉]：${chorusStr}
+   - [主副歌过渡]：${transitionStr}
+   - [歌曲结束方式]：${endingStr}
+
+4. 整体音乐风格：
+   - ${genreStr}
+
+5. 节奏及速度 (BPM)：
+   - ${tempoStr}
+
+6.1 调性与和声（Key & Harmony）：
+   - [调性]：${keyStr}
+   - [调式类型]：${modeStr}
+   - [和声复杂度]：${harmonyStr}
+   - [转调]：${modulationStr}
+
+6. 核心情绪传达：
+   - [主歌情绪]：${verseEmotionStr}
+   - [副歌情绪]：${chorusEmotionStr}
+
+7. 歌词文本：
+   ${lyricsStr}
+
+---
+8. 最终交付规格要求 (多模型矩阵)：
+   - 基于以上核心音乐参数，本次制作必须采用多模型组合生成方式。
+   - 【数量与模型分配】：共计需产出 10 首 Demo。其中主力模型 Suno 产出 4 首；Udio 产出 3 首；Mureka 产出 3 首。
+
+---
+(请一键复制此参数卡，发送给您的专属提示词架构师或其他专家库进行深度执行)`;
+
+            document.getElementById('codeOutput').innerText = template;
+            const consoleEl = document.getElementById('console');
+            consoleEl.style.display = 'block';
+            
+            // Trigger reflow for animation
+            void consoleEl.offsetWidth;
+            consoleEl.classList.add('visible');
+            
+            // Scroll to bottom softly
+            setTimeout(() => {
+                consoleEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
+        }
+
+        function copyToClipboard() {
+            const text = document.getElementById('codeOutput').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                const originalText = btn.innerText;
+                btn.innerText = 'COPIED!';
+                btn.style.color = 'var(--accent)';
+                btn.style.borderColor = 'var(--accent)';
+                
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.color = 'var(--text-secondary)';
+                    btn.style.borderColor = 'var(--hairline-strong)';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
