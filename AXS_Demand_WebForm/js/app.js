@@ -2,7 +2,7 @@ function getCheckedValues(name) {
             return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(el => el.value);
         }
 
-        function submitForm() {
+        async function submitForm() {
             // 0. 基础设定
             const usageRadio = document.querySelector('input[name="usage"]:checked');
             let usageStr = usageRadio ? usageRadio.value : '未提供';
@@ -157,47 +157,30 @@ function getCheckedValues(name) {
                 consoleEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }, 100);
 
-            // 2. 发送到邮箱 (FormSubmit) - 恢复为新标签页提交 (本地文件强制验证码)
+            // 2. 发送到邮箱 (FormSubmit AJAX 静默提交，仅能在 GitHub Pages 等服务器环境下运行)
             try {
-                const form = document.createElement('form');
-                form.action = "https://formsubmit.co/el/hayifo";
-                form.method = "POST";
-                form.target = "_blank"; // 必须弹出新页面，因为本地运行会被 FormSubmit 强制要求人机验证
+                // AJAX 静默发送
+                const response = await fetch("https://formsubmit.co/ajax/lhcjhac@gmail.com", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        _subject: "【AXS MUSIC】新客户配置表提交",
+                        _captcha: "false",
+                        message: template
+                    })
+                });
 
-                const subjectInput = document.createElement('input');
-                subjectInput.type = "hidden";
-                subjectInput.name = "_subject";
-                subjectInput.value = "【AXS MUSIC】新客户配置表提交";
-                form.appendChild(subjectInput);
-
-                // 提供一个明确的返回页面，防止验证完成后跳回 FormSubmit 首页
-                const nextInput = document.createElement('input');
-                nextInput.type = "hidden";
-                nextInput.name = "_next";
-                nextInput.value = "https://jhac999.github.io/"; 
-                form.appendChild(nextInput);
-
-                const messageInput = document.createElement('input');
-                messageInput.type = "hidden";
-                messageInput.name = "message";
-                messageInput.value = template;
-                form.appendChild(messageInput);
-
-                // 添加隐藏的 honeypot 防止垃圾邮件
-                const honeyInput = document.createElement('input');
-                honeyInput.type = "text";
-                honeyInput.name = "_honey";
-                honeyInput.style.display = "none";
-                form.appendChild(honeyInput);
-
-                document.body.appendChild(form);
-                form.submit();
-                document.body.removeChild(form);
-
-                submitBtn.innerText = "请在新标签页完成人机验证！";
-                submitBtn.style.backgroundColor = "#f59e0b"; // 橙色警告
-                submitBtn.style.color = "#fff";
-                submitBtn.style.pointerEvents = "auto";
+                if (response.ok) {
+                    submitBtn.innerText = "发送成功！主理人已收到您的参数卡";
+                    submitBtn.style.backgroundColor = "#10b981"; // 绿
+                    submitBtn.style.color = "#fff";
+                    submitBtn.style.pointerEvents = "none";
+                } else {
+                    throw new Error("服务端返回异常状态码: " + response.status);
+                }
 
             } catch (error) {
                 console.error("Mail Error:", error);
