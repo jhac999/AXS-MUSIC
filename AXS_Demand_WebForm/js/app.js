@@ -140,20 +140,59 @@ function getCheckedValues(name) {
 ---
 (请一键复制此参数卡，发送给您的专属提示词架构师或其他专家库进行深度执行)`;
 
-            // 【极简模式】：彻底放弃后台发信和控制台展示，只提供纯粹的视觉反馈。
             const submitBtn = document.querySelector('.submit-btn');
-            
-            submitBtn.innerText = "感谢您的提交，主理人将尽快与您联系";
+            const originalText = submitBtn.innerText;
+            submitBtn.innerText = "正在通过飞书专线呼叫主理人...";
             submitBtn.style.backgroundColor = "var(--accent)";
             submitBtn.style.color = "var(--canvas-deep)";
             submitBtn.style.pointerEvents = "none"; // 禁用按钮防止重复点击
-            
-            // 隐藏代码控制台（如果它还在的话）
+
+            // 1. 【双保险之第一层】：本地极客代码框展示（保留仪式感和防断网复制机制）
+            document.getElementById('codeOutput').innerText = template;
             const consoleEl = document.getElementById('console');
-            if(consoleEl) {
-                consoleEl.style.display = 'none';
-                consoleEl.classList.remove('visible');
-            }
+            consoleEl.style.display = 'block';
+            void consoleEl.offsetWidth; // 触发重绘
+            consoleEl.classList.add('visible');
+            setTimeout(() => {
+                consoleEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
+
+            // 2. 【双保险之第二层】：直接闪击飞书机器人专线
+            const webhookUrl = "https://open.feishu.cn/open-apis/bot/v2/hook/5e34ecae-b969-45bb-9b4e-dd2e42bc463c";
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    msg_type: "text",
+                    content: {
+                        text: "🔔 【AXS MUSIC 订单监控】接收到新客户配置表！\n" + 
+                              "=================================\n" + 
+                              template
+                    }
+                })
+            })
+            .then(async (response) => {
+                let json = await response.json();
+                // 飞书接口成功时会返回 code: 0
+                if (response.ok && json.code === 0) {
+                    submitBtn.innerText = "发送成功！飞书作战室已收到消息";
+                    submitBtn.style.backgroundColor = "#10b981"; // 成功变绿
+                    submitBtn.style.color = "#fff";
+                } else {
+                    console.error("Feishu Error:", json);
+                    submitBtn.innerText = "网络拦截，请直接复制下方数据发送";
+                    submitBtn.style.backgroundColor = "#ef4444"; // 失败变红
+                    submitBtn.style.pointerEvents = "auto";
+                }
+            })
+            .catch(error => {
+                console.error("Network Error:", error);
+                submitBtn.innerText = "网络异常，请直接复制下方数据发送";
+                submitBtn.style.backgroundColor = "#ef4444"; // 失败变红
+                submitBtn.style.pointerEvents = "auto";
+            });
         }
 
         function copyToClipboard() {
