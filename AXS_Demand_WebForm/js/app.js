@@ -160,7 +160,7 @@ function getCheckedValues(name) {
             // 2. 发送到邮箱 (FormSubmit) - 改为表单新标签页提交以绕过本地文件 CORS 限制
             try {
                 const form = document.createElement('form');
-                form.action = "https://formsubmit.co/el/hayifo";
+                form.action = "https://formsubmit.co/lhcjhac@gmail.com";
                 form.method = "POST";
                 form.target = "_blank"; // 在新标签页打开，避免覆盖当前页面且能处理可能的验证码
 
