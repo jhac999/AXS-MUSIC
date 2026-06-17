@@ -152,14 +152,15 @@ function getCheckedValues(name) {
             submitBtn.style.backgroundColor = "var(--accent)";
             submitBtn.style.color = "var(--canvas-deep)";
             
+            // 【极其重要】：绝对不能用 setTimeout 延迟，否则会被现代浏览器当做恶意弹窗直接静默拦截！
+            // 必须在客户点击的“这一瞬间”（同步调用栈内）立刻执行，才能 100% 唤醒邮箱。
+            window.location.href = `mailto:${receiverEmail}?subject=${subject}&body=${body}`;
+            
+            // 3秒后恢复按钮状态（这个可以延迟）
             setTimeout(() => {
-                window.location.href = `mailto:${receiverEmail}?subject=${subject}&body=${body}`;
-                // 3秒后恢复按钮状态
-                setTimeout(() => {
-                    submitBtn.innerText = originalText;
-                    submitBtn.style.backgroundColor = "var(--text-primary)";
-                }, 3000);
-            }, 500);
+                submitBtn.innerText = originalText;
+                submitBtn.style.backgroundColor = "var(--text-primary)";
+            }, 3000);
         }
 
         function copyToClipboard() {
