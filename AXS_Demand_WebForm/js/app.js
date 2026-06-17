@@ -140,19 +140,21 @@ function getCheckedValues(name) {
 ---
 (请一键复制此参数卡，发送给您的专属提示词架构师或其他专家库进行深度执行)`;
 
-            // 【终极断舍离：抛弃所有发信玄学，回归最稳妥的本地展示模式】
-            document.getElementById('codeOutput').innerText = template;
+            // 【极简模式】：客户提交后，不做任何发信、不展示任何代码。只做纯粹的视觉反馈。
+            const submitBtn = document.querySelector('.submit-btn');
+            const originalText = submitBtn.innerText;
+            
+            submitBtn.innerText = "感谢您的提交，主理人将尽快与您联系";
+            submitBtn.style.backgroundColor = "var(--accent)";
+            submitBtn.style.color = "var(--canvas-deep)";
+            submitBtn.style.pointerEvents = "none"; // 禁用按钮防止重复点击
+            
+            // 隐藏代码控制台（如果它还在的话）
             const consoleEl = document.getElementById('console');
-            consoleEl.style.display = 'block';
-            
-            // 触发动画重绘
-            void consoleEl.offsetWidth;
-            consoleEl.classList.add('visible');
-            
-            // 丝滑滚动到最底部展示代码
-            setTimeout(() => {
-                consoleEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }, 100);
+            if(consoleEl) {
+                consoleEl.style.display = 'none';
+                consoleEl.classList.remove('visible');
+            }
         }
 
         function copyToClipboard() {
