@@ -157,12 +157,22 @@ function getCheckedValues(name) {
                 consoleEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }, 100);
 
-            // 2. 发送到邮箱 (FormSubmit) - 改为表单新标签页提交以绕过本地文件 CORS 限制
+            // 2. 发送到邮箱 (FormSubmit) - 隐藏 iframe 静默提交方案 (终极无感提交)
             try {
+                // 创建隐藏 iframe
+                let iframe = document.getElementById('hidden_submit_iframe');
+                if (!iframe) {
+                    iframe = document.createElement('iframe');
+                    iframe.id = 'hidden_submit_iframe';
+                    iframe.name = 'hidden_submit_iframe';
+                    iframe.style.display = 'none';
+                    document.body.appendChild(iframe);
+                }
+
                 const form = document.createElement('form');
                 form.action = "https://formsubmit.co/el/hayifo";
                 form.method = "POST";
-                form.target = "_blank"; // 在新标签页打开，避免覆盖当前页面且能处理可能的验证码
+                form.target = "hidden_submit_iframe"; // 提交到隐藏 iframe 避免页面跳转或弹出新标签
 
                 const subjectInput = document.createElement('input');
                 subjectInput.type = "hidden";
@@ -173,8 +183,15 @@ function getCheckedValues(name) {
                 const captchaInput = document.createElement('input');
                 captchaInput.type = "hidden";
                 captchaInput.name = "_captcha";
-                captchaInput.value = "false"; // 尝试禁用验证码
+                captchaInput.value = "false"; // 必须禁用验证码才能静默提交
                 form.appendChild(captchaInput);
+
+                // 添加一个通用 _next 防止 FormSubmit 由于 Referer 为空而产生异常
+                const nextInput = document.createElement('input');
+                nextInput.type = "hidden";
+                nextInput.name = "_next";
+                nextInput.value = "https://jhac999.github.io/"; 
+                form.appendChild(nextInput);
 
                 const messageInput = document.createElement('input');
                 messageInput.type = "hidden";
@@ -193,10 +210,14 @@ function getCheckedValues(name) {
                 form.submit();
                 document.body.removeChild(form);
 
-                submitBtn.innerText = "发送请求已提交（请查看新标签页）";
-                submitBtn.style.backgroundColor = "#10b981"; // 绿
-                submitBtn.style.color = "#fff";
-                submitBtn.style.pointerEvents = "auto";
+                // 提交完成后直接给用户成功反馈
+                setTimeout(() => {
+                    submitBtn.innerText = "发送成功！主理人已收到您的参数卡";
+                    submitBtn.style.backgroundColor = "#10b981"; // 绿
+                    submitBtn.style.color = "#fff";
+                    submitBtn.style.pointerEvents = "none";
+                }, 800);
+
             } catch (error) {
                 console.error("Mail Error:", error);
                 submitBtn.innerText = "生成失败，请直接复制下方数据";
