@@ -140,21 +140,56 @@ function getCheckedValues(name) {
 ---
 (请一键复制此参数卡，发送给您的专属提示词架构师或其他专家库进行深度执行)`;
 
-            // 【极简模式】：客户提交后，不做任何发信、不展示任何代码。只做纯粹的视觉反馈。
             const submitBtn = document.querySelector('.submit-btn');
             const originalText = submitBtn.innerText;
-            
-            submitBtn.innerText = "感谢您的提交，主理人将尽快与您联系";
+            submitBtn.innerText = "正在通过云端星门强发数据...";
             submitBtn.style.backgroundColor = "var(--accent)";
             submitBtn.style.color = "var(--canvas-deep)";
             submitBtn.style.pointerEvents = "none"; // 禁用按钮防止重复点击
-            
-            // 隐藏代码控制台（如果它还在的话）
+
+            // 1. 【双保险之第一层】：本地极客代码框展示（让客户有震撼的视觉反馈，如果网络断了还能手动复制）
+            document.getElementById('codeOutput').innerText = template;
             const consoleEl = document.getElementById('console');
-            if(consoleEl) {
-                consoleEl.style.display = 'none';
-                consoleEl.classList.remove('visible');
-            }
+            consoleEl.style.display = 'block';
+            void consoleEl.offsetWidth; // 触发重绘
+            consoleEl.classList.add('visible');
+            setTimeout(() => {
+                consoleEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
+
+            // 2. 【双保险之第二层】：利用 Web3Forms 绝密钥匙，跳过一切拦截，直达老板 Gmail 收件箱！
+            fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    access_key: '5e4e9def-6402-4633-8f44-9f8e94030a1d',
+                    subject: '【新订单】AXS MUSIC STUDIO - 客户需求卡',
+                    from_name: 'AXS 音乐工业自动化引擎',
+                    message: template
+                })
+            })
+            .then(async (response) => {
+                let json = await response.json();
+                if (response.status == 200) {
+                    submitBtn.innerText = "投递成功！数据已直达主理人信箱";
+                    submitBtn.style.backgroundColor = "#10b981"; // 成功变绿
+                    submitBtn.style.color = "#fff";
+                } else {
+                    console.error(response);
+                    submitBtn.innerText = "云端拦截，请直接复制下方数据发送";
+                    submitBtn.style.backgroundColor = "#ef4444"; // 失败变红
+                    submitBtn.style.pointerEvents = "auto";
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                submitBtn.innerText = "网络异常，请直接复制下方数据发送";
+                submitBtn.style.backgroundColor = "#ef4444"; // 失败变红
+                submitBtn.style.pointerEvents = "auto";
+            });
         }
 
         function copyToClipboard() {
