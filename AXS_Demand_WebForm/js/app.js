@@ -157,22 +157,12 @@ function getCheckedValues(name) {
                 consoleEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }, 100);
 
-            // 2. 发送到邮箱 (FormSubmit) - 隐藏 iframe 静默提交方案 (终极无感提交)
+            // 2. 发送到邮箱 (FormSubmit) - 恢复为新标签页提交 (本地文件强制验证码)
             try {
-                // 创建隐藏 iframe
-                let iframe = document.getElementById('hidden_submit_iframe');
-                if (!iframe) {
-                    iframe = document.createElement('iframe');
-                    iframe.id = 'hidden_submit_iframe';
-                    iframe.name = 'hidden_submit_iframe';
-                    iframe.style.display = 'none';
-                    document.body.appendChild(iframe);
-                }
-
                 const form = document.createElement('form');
                 form.action = "https://formsubmit.co/el/hayifo";
                 form.method = "POST";
-                form.target = "hidden_submit_iframe"; // 提交到隐藏 iframe 避免页面跳转或弹出新标签
+                form.target = "_blank"; // 必须弹出新页面，因为本地运行会被 FormSubmit 强制要求人机验证
 
                 const subjectInput = document.createElement('input');
                 subjectInput.type = "hidden";
@@ -180,13 +170,7 @@ function getCheckedValues(name) {
                 subjectInput.value = "【AXS MUSIC】新客户配置表提交";
                 form.appendChild(subjectInput);
 
-                const captchaInput = document.createElement('input');
-                captchaInput.type = "hidden";
-                captchaInput.name = "_captcha";
-                captchaInput.value = "false"; // 必须禁用验证码才能静默提交
-                form.appendChild(captchaInput);
-
-                // 添加一个通用 _next 防止 FormSubmit 由于 Referer 为空而产生异常
+                // 提供一个明确的返回页面，防止验证完成后跳回 FormSubmit 首页
                 const nextInput = document.createElement('input');
                 nextInput.type = "hidden";
                 nextInput.name = "_next";
@@ -210,13 +194,10 @@ function getCheckedValues(name) {
                 form.submit();
                 document.body.removeChild(form);
 
-                // 提交完成后直接给用户成功反馈
-                setTimeout(() => {
-                    submitBtn.innerText = "发送成功！主理人已收到您的参数卡";
-                    submitBtn.style.backgroundColor = "#10b981"; // 绿
-                    submitBtn.style.color = "#fff";
-                    submitBtn.style.pointerEvents = "none";
-                }, 800);
+                submitBtn.innerText = "请在新标签页完成人机验证！";
+                submitBtn.style.backgroundColor = "#f59e0b"; // 橙色警告
+                submitBtn.style.color = "#fff";
+                submitBtn.style.pointerEvents = "auto";
 
             } catch (error) {
                 console.error("Mail Error:", error);
