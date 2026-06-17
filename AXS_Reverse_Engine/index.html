@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AXS MUSIC STUDIO | Step 7: 逆向解析质检引擎</title>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- 头部信息 -->
+        <header class="header">
+            <div class="logo-area">
+                <div class="logo">AXS QC ENGINE</div>
+                <div class="version">v1.0.0 [STEP 7]</div>
+            </div>
+            <div class="status-indicator">
+                <span class="dot blinking" id="system-status-dot"></span>
+                <span class="status-text" id="system-status-text">系统待命 (AWAITING AUDIO INPUT)</span>
+            </div>
+        </header>
+
+        <main class="grid-layout">
+            <!-- 左侧：载入与参数分析 -->
+            <section class="panel input-panel">
+                <h2 class="panel-title">[1] 音频光谱载入台</h2>
+                <div class="audio-loader">
+                    <div class="upload-box" id="upload-box">
+                        <p class="cyber-text">点击或拖拽 AI 生成的音频成品至此</p>
+                        <p class="cyber-subtext">SUPPORTED FORMATS: .WAV / .MP3</p>
+                        <input type="file" id="audio-upload" accept="audio/*" hidden>
+                    </div>
+                    <!-- 模拟播放器波形 -->
+                    <div class="player-module hidden" id="player-module">
+                        <audio id="audio-player" controls></audio>
+                        <div class="fake-waveform"></div>
+                    </div>
+                </div>
+
+                <h2 class="panel-title mt-4">[2] 逆向反推参数区</h2>
+                <div class="form-group">
+                    <label>实测 BPM (Beats Per Minute)</label>
+                    <input type="number" id="bpm-input" placeholder="e.g. 120" class="cyber-input">
+                </div>
+                <div class="form-group">
+                    <label>实测调性 (Key Signature)</label>
+                    <input type="text" id="key-input" placeholder="e.g. C minor" class="cyber-input">
+                </div>
+                <div class="form-group">
+                    <label>配器结构流 (Structure Flow)</label>
+                    <input type="text" id="structure-input" placeholder="Intro -> Verse -> Chorus -> Drop" class="cyber-input">
+                </div>
+            </section>
+
+            <!-- 右侧：雷区防线与报告生成 -->
+            <section class="panel qc-panel">
+                <h2 class="panel-title text-warning">[3] 🚨 边界红线排雷区</h2>
+                <p class="panel-desc">制作人强制勾选。任何一项不达标将立刻打回重造，拒绝出具分析报告。</p>
+                
+                <div class="qc-checkboxes">
+                    <label class="cyber-checkbox">
+                        <input type="checkbox" class="qc-check">
+                        <span class="checkmark"></span>
+                        <span class="label-text">高频是否存在明显“水下电音”撕裂失真？</span>
+                    </label>
+                    <label class="cyber-checkbox">
+                        <input type="checkbox" class="qc-check">
+                        <span class="checkmark"></span>
+                        <span class="label-text">低频（Sub-bass）是否浑浊掩盖了底鼓？</span>
+                    </label>
+                    <label class="cyber-checkbox">
+                        <input type="checkbox" class="qc-check">
+                        <span class="checkmark"></span>
+                        <span class="label-text">歌曲结构是否有严重断层或突然静音？</span>
+                    </label>
+                    <label class="cyber-checkbox">
+                        <input type="checkbox" class="qc-check">
+                        <span class="checkmark"></span>
+                        <span class="label-text">和声是否存在明显冲突离调现象？</span>
+                    </label>
+                </div>
+
+                <!-- 拦截警告框 -->
+                <div class="alert-box hidden" id="alert-box">
+                    <h3>【致命警告】质量不达标</h3>
+                    <p>检测到致命瑕疵！此成品已被拦截。发回 Step 5 重新生成！</p>
+                </div>
+
+                <div class="action-area">
+                    <button class="cyber-btn" id="generate-btn">
+                        <span class="btn-text">生成最终交付分析结案报告</span>
+                        <span class="btn-glitch"></span>
+                    </button>
+                </div>
+
+                <!-- 最终报告展示区 -->
+                <div class="report-box hidden" id="report-box">
+                    <h3 class="report-title">AXS 逆向测算结案报告</h3>
+                    <div class="report-content" id="report-content"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
