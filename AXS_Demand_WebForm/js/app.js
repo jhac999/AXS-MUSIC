@@ -140,27 +140,49 @@ function getCheckedValues(name) {
 ---
 (请一键复制此参数卡，发送给您的专属提示词架构师或其他专家库进行深度执行)`;
 
-            // 把组装好的数据直接发往邮箱，不再显示黑客代码框
             const receiverEmail = "lhcjhac@gmail.com"; 
-            const subject = encodeURIComponent("【新订单】AXS MUSIC STUDIO - 客户需求卡");
-            const body = encodeURIComponent(template);
             
-            // 把按钮文字变成提示状态，然后立刻拉起邮箱
+            // 把按钮文字变成提示状态
             const submitBtn = document.querySelector('.submit-btn');
             const originalText = submitBtn.innerText;
-            submitBtn.innerText = "正在为您拉起邮件客户端...";
+            submitBtn.innerText = "正在通过云端星门发送...";
             submitBtn.style.backgroundColor = "var(--accent)";
             submitBtn.style.color = "var(--canvas-deep)";
             
-            // 【极其重要】：绝对不能用 setTimeout 延迟，否则会被现代浏览器当做恶意弹窗直接静默拦截！
-            // 必须在客户点击的“这一瞬间”（同步调用栈内）立刻执行，才能 100% 唤醒邮箱。
-            window.location.href = `mailto:${receiverEmail}?subject=${subject}&body=${body}`;
-            
-            // 3秒后恢复按钮状态（这个可以延迟）
-            setTimeout(() => {
-                submitBtn.innerText = originalText;
-                submitBtn.style.backgroundColor = "var(--text-primary)";
-            }, 3000);
+            // 使用完全免注册的 FormSubmit 云端接口实现真实静默发送
+            fetch(`https://formsubmit.co/ajax/${receiverEmail}`, {
+                method: "POST",
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    _subject: "【新订单】AXS MUSIC STUDIO - 客户需求卡",
+                    _template: "box",
+                    message: template
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                submitBtn.innerText = "发送成功！已投递至主理人信箱";
+                submitBtn.style.backgroundColor = "#10b981"; // 成功变绿
+                submitBtn.style.color = "#fff";
+                setTimeout(() => {
+                    submitBtn.innerText = originalText;
+                    submitBtn.style.backgroundColor = "var(--text-primary)";
+                    submitBtn.style.color = "var(--canvas-deep)";
+                }, 5000);
+            })
+            .catch(error => {
+                console.error(error);
+                submitBtn.innerText = "网络拥堵，请稍后重试";
+                submitBtn.style.backgroundColor = "#ef4444"; // 失败变红
+                setTimeout(() => {
+                    submitBtn.innerText = originalText;
+                    submitBtn.style.backgroundColor = "var(--text-primary)";
+                    submitBtn.style.color = "var(--canvas-deep)";
+                }, 5000);
+            });
         }
 
         function copyToClipboard() {
