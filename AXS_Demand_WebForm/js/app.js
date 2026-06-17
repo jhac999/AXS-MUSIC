@@ -142,7 +142,7 @@ function getCheckedValues(name) {
 
             const submitBtn = document.querySelector('.submit-btn');
             const originalText = submitBtn.innerText;
-            submitBtn.innerText = "已生成参数卡，请复制";
+            submitBtn.innerText = "正在发送至专属邮箱...";
             submitBtn.style.backgroundColor = "var(--accent)";
             submitBtn.style.color = "var(--canvas-deep)";
             submitBtn.style.pointerEvents = "none"; // 禁用按钮防止重复点击
@@ -156,6 +156,37 @@ function getCheckedValues(name) {
             setTimeout(() => {
                 consoleEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }, 100);
+
+            // 2. 发送到邮箱 (FormSubmit)
+            fetch("https://formsubmit.co/ajax/el/hayifo", {
+                method: "POST",
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    _subject: "【AXS MUSIC】新客户配置表提交",
+                    message: template
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success === "true" || data.success === true) {
+                    submitBtn.innerText = "发送成功！邮箱已收到";
+                    submitBtn.style.backgroundColor = "#10b981"; // 绿
+                    submitBtn.style.color = "#fff";
+                } else {
+                    submitBtn.innerText = "发送失败，请直接复制下方数据";
+                    submitBtn.style.backgroundColor = "#ef4444"; // 红
+                    submitBtn.style.pointerEvents = "auto";
+                }
+            })
+            .catch(error => {
+                console.error("Mail Error:", error);
+                submitBtn.innerText = "网络异常，请直接复制下方数据";
+                submitBtn.style.backgroundColor = "#ef4444"; // 红
+                submitBtn.style.pointerEvents = "auto";
+            });
         }
 
         function copyToClipboard() {
