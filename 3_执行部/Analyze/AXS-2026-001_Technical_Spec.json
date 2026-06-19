@@ -1,0 +1,27 @@
+{
+  "order_id": "AXS-2026-001",
+  "client": "StarEV",
+  "genre_tags": [
+    "Cyberpunk Mid-Tempo",
+    "Cinematic EDM"
+  ],
+  "mood_tags": [
+    "High Energy",
+    "Futuristic",
+    "Epic"
+  ],
+  "bpm": 105,
+  "key": "E Minor",
+  "time_signature": "4/4",
+  "instrumentation": [
+    "Heavy Reese Bass",
+    "Cinematic Brass",
+    "Distorted 808",
+    "Arpeggiated Synth"
+  ],
+  "vocal_style": "Powerful Male Rock Vocal",
+  "harmony_color": "i-VI-III-VII (Epic progression)",
+  "mixing_target": "Hi-Fi, Sub-Bass Heavy, Wide Stereo (Optimized for Car Audio)",
+  "lyrics_source": "ai_generated",
+  "locked": true
+}
