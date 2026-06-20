@@ -351,18 +351,29 @@
         .badge {
             display: inline-block;
             padding: 3px 10px;
-            background: rgba(255, 255, 255, 0.05);
-            color: #bbb;
-            border-radius: 4px;
+            background: linear-gradient(135deg, rgba(255, 170, 0, 0.15) 0%, rgba(200, 100, 0, 0.05) 100%);
+            color: #ffcc00;
+            border-radius: 3px;
             font-size: 0.75rem;
             margin-left: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 170, 0, 0.4);
+            border-bottom: 2px solid rgba(255, 170, 0, 0.8);
+            border-right: 2px solid rgba(255, 170, 0, 0.8);
             letter-spacing: 2px;
             font-family: 'Montserrat', sans-serif;
-            font-weight: 500;
+            font-weight: 800;
             vertical-align: middle;
             text-transform: uppercase;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.5), 0 0 10px rgba(255, 170, 0, 0.2);
+            text-shadow: 1px 1px 0 rgba(0,0,0,0.8);
+            white-space: nowrap;
+            flex-shrink: 0;
+            transition: all 0.3s;
+        }
+
+        .badge:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 3px 3px 8px rgba(0,0,0,0.6), 0 0 15px rgba(255, 170, 0, 0.4);
         }
 
         .boss-watermark {
