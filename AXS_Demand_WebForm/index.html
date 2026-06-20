@@ -6,12 +6,12 @@
     <title>AXS MUSIC STUDIO - 音乐风格定位问卷</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <!-- 极客风音频控制中枢 -->
+    <!-- 音频控制中枢 -->
     <div id="audio-controller" class="audio-widget muted">
         <div class="audio-bars">
             <span class="bar"></span>
@@ -40,6 +40,14 @@
             <div class="form-group">
                 <label class="section-question">0. 基础信息与用途</label>
                 
+                <div class="sub-category">生成引擎模式 (AI 核心出卡逻辑)</div>
+                <div class="options-grid" style="margin-bottom: 20px;">
+                    <label class="option-label"><input type="radio" name="engine_mode" value="写实制作（人类风格）">写实制作（人类风格）</label>
+                    <label class="option-label"><input type="radio" name="engine_mode" value="商业爆款（流媒体优化）">商业爆款（流媒体优化）</label>
+                    <label class="option-label"><input type="radio" name="engine_mode" value="影视级（动态叙事）">影视级（动态叙事）</label>
+                    <label class="option-label"><input type="radio" name="engine_mode" value="实验风格（自由生成）">实验风格（自由生成）</label>
+                </div>
+
                 <div class="sub-category">歌曲用途与时长</div>
                 <div class="options-grid">
                     <label class="option-label"><input type="radio" name="usage" value="短视频BGM（约30秒）">短视频BGM（约30秒）</label>
@@ -95,8 +103,35 @@
 
             <!-- 3. 结构与段落处理 -->
             <div class="form-group">
-                <label class="section-question">3. 主歌与副歌感觉</label>
+                <label class="section-question">3. 主歌与副歌感觉及能量曲线</label>
                 
+                <div class="sub-category">结构能量曲线 (Energy Curve)</div>
+                <div style="margin-bottom: 20px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; border: 1px solid var(--hairline-strong);">
+                    <div style="margin-bottom: 15px;">
+                        <label style="display:flex; justify-content:space-between; margin-bottom:5px; color: var(--text-primary); font-size: 0.9rem;">
+                            <span>A段能量 (Verse: 1-5)</span>
+                            <span id="energy_a_val" style="color: var(--accent); font-weight: bold;">3</span>
+                        </label>
+                        <input type="range" id="energy_a" name="energy_a" min="1" max="5" value="3" class="cyber-slider" oninput="document.getElementById('energy_a_val').innerText = this.value">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display:flex; justify-content:space-between; margin-bottom:5px; color: var(--text-primary); font-size: 0.9rem;">
+                            <span>B段能量 (Chorus: 6-10)</span>
+                            <span id="energy_b_val" style="color: var(--accent); font-weight: bold;">8</span>
+                        </label>
+                        <input type="range" id="energy_b" name="energy_b" min="6" max="10" value="8" class="cyber-slider" oninput="document.getElementById('energy_b_val').innerText = this.value">
+                    </div>
+                    <div>
+                        <label style="display:block; margin-bottom:8px; color: var(--text-primary); font-size: 0.9rem;">桥段动态 (Bridge)</label>
+                        <div class="options-grid">
+                            <label class="option-label"><input type="radio" name="energy_bridge" value="下降 (Drop)">下降 (Drop)</label>
+                            <label class="option-label"><input type="radio" name="energy_bridge" value="上升 (Build-up)">上升 (Build-up)</label>
+                            <label class="option-label"><input type="radio" name="energy_bridge" value="爆发 (Explosion)">爆发 (Explosion)</label>
+                            <label class="option-label"><input type="radio" name="energy_bridge" value="无桥段">无桥段</label>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="sub-category">主歌感觉</div>
                 <div class="options-grid">
                     <label class="option-label"><input type="checkbox" name="verse_vibe" value="安静/内敛">安静/内敛</label>
@@ -151,8 +186,8 @@
 
             <!-- 5. 整体音乐风格 -->
             <div class="form-group">
-                <label class="section-question">5. 整体音乐风格</label>
-                <div class="question-subtext">（可多选组合，如“国风+电子+流行”）</div>
+                <label class="section-question">5. 整体音乐风格 (主次锁定)</label>
+                <div class="question-subtext">（点击选择：第1次点击为【主风格】，第2-3次为【次风格】。最多选3项）</div>
                 
                 <div class="sub-category">流行类</div>
                 <div class="options-grid">
@@ -276,10 +311,50 @@
 
             <!-- 7. 核心情绪 -->
             <div class="form-group">
-                <label class="section-question">7. 你希望这首歌传达的核心情绪是？</label>
-                <div class="question-subtext">（建议各选1-2个）</div>
+                <label class="section-question">7. 核心情绪传达</label>
+                <div class="question-subtext">（请先设置核心情绪强度底色，然后再选择主副歌具体情绪标签）</div>
+
+                <div class="sub-category">核心情绪强度 (Intensity System 0-10)</div>
+                <div style="margin-bottom: 25px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; border: 1px solid var(--hairline-strong); display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <label style="display:flex; justify-content:space-between; margin-bottom:5px; font-size: 0.9rem;">
+                            <span>孤独 (Loneliness)</span><span id="int_lonely_val" style="color: var(--accent); font-weight: bold;">0</span>
+                        </label>
+                        <input type="range" id="int_lonely" name="int_lonely" min="0" max="10" value="0" class="cyber-slider" oninput="document.getElementById('int_lonely_val').innerText = this.value">
+                    </div>
+                    <div>
+                        <label style="display:flex; justify-content:space-between; margin-bottom:5px; font-size: 0.9rem;">
+                            <span>力量 (Power)</span><span id="int_power_val" style="color: var(--accent); font-weight: bold;">0</span>
+                        </label>
+                        <input type="range" id="int_power" name="int_power" min="0" max="10" value="0" class="cyber-slider" oninput="document.getElementById('int_power_val').innerText = this.value">
+                    </div>
+                    <div>
+                        <label style="display:flex; justify-content:space-between; margin-bottom:5px; font-size: 0.9rem;">
+                            <span>热血 (Passion)</span><span id="int_passion_val" style="color: var(--accent); font-weight: bold;">0</span>
+                        </label>
+                        <input type="range" id="int_passion" name="int_passion" min="0" max="10" value="0" class="cyber-slider" oninput="document.getElementById('int_passion_val').innerText = this.value">
+                    </div>
+                    <div>
+                        <label style="display:flex; justify-content:space-between; margin-bottom:5px; font-size: 0.9rem;">
+                            <span>治愈 (Healing)</span><span id="int_healing_val" style="color: var(--accent); font-weight: bold;">0</span>
+                        </label>
+                        <input type="range" id="int_healing" name="int_healing" min="0" max="10" value="0" class="cyber-slider" oninput="document.getElementById('int_healing_val').innerText = this.value">
+                    </div>
+                    <div>
+                        <label style="display:flex; justify-content:space-between; margin-bottom:5px; font-size: 0.9rem;">
+                            <span>欢快 (Joy)</span><span id="int_joy_val" style="color: var(--accent); font-weight: bold;">0</span>
+                        </label>
+                        <input type="range" id="int_joy" name="int_joy" min="0" max="10" value="0" class="cyber-slider" oninput="document.getElementById('int_joy_val').innerText = this.value">
+                    </div>
+                    <div>
+                        <label style="display:flex; justify-content:space-between; margin-bottom:5px; font-size: 0.9rem;">
+                            <span>浪漫 (Romance)</span><span id="int_romance_val" style="color: var(--accent); font-weight: bold;">0</span>
+                        </label>
+                        <input type="range" id="int_romance" name="int_romance" min="0" max="10" value="0" class="cyber-slider" oninput="document.getElementById('int_romance_val').innerText = this.value">
+                    </div>
+                </div>
                 
-                <div class="sub-category">主歌核心情绪</div>
+                <div class="sub-category">主歌具体情绪标签</div>
                 <div class="options-grid">
                     <label class="option-label"><input type="checkbox" name="verse_emotion" value="治愈">治愈</label>
                     <label class="option-label"><input type="checkbox" name="verse_emotion" value="孤独">孤独</label>

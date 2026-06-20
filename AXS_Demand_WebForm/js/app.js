@@ -4,6 +4,9 @@ function getCheckedValues(name) {
 
         async function submitForm() {
             // 0. 基础设定
+            const engineRadio = document.querySelector('input[name="engine_mode"]:checked');
+            const engineStr = engineRadio ? engineRadio.value : '未提供';
+
             const usageRadio = document.querySelector('input[name="usage"]:checked');
             let usageStr = usageRadio ? usageRadio.value : '未提供';
             const usageOther = document.getElementById('usage_other').value;
@@ -25,6 +28,12 @@ function getCheckedValues(name) {
             const instOther = document.getElementById('instrument_other').value;
             if (instOther) instruments.push(instOther);
             const instrumentsStr = instruments.length > 0 ? instruments.join(', ') : '未提供';
+
+            // 3.5 能量曲线
+            const energyA = document.getElementById('energy_a') ? document.getElementById('energy_a').value : '未提供';
+            const energyB = document.getElementById('energy_b') ? document.getElementById('energy_b').value : '未提供';
+            const energyBridgeRadio = document.querySelector('input[name="energy_bridge"]:checked');
+            const energyBridgeStr = energyBridgeRadio ? energyBridgeRadio.value : '未提供';
 
             // 3. 主歌感觉
             let verseVibe = getCheckedValues('verse_vibe');
@@ -50,10 +59,17 @@ function getCheckedValues(name) {
             if (endingOther) endingStr = endingOther;
 
             // 5. 整体音乐风格
-            let genres = getCheckedValues('genre');
+            const checkedGenres = Array.from(document.querySelectorAll('input[name="genre"]:checked'));
+            let genreStr = '';
+            if (checkedGenres.length > 0) {
+                const primary = checkedGenres[0].value;
+                const secondary = checkedGenres.slice(1).map(el => el.value).join(' + ');
+                genreStr = `【主风格】${primary}`;
+                if (secondary) genreStr += ` | 【次风格】${secondary}`;
+            }
             const genreOther = document.getElementById('genre_other').value;
-            if (genreOther) genres.push(genreOther);
-            const genreStr = genres.length > 0 ? genres.join(' + ') : '未提供';
+            if (genreOther) genreStr += ` | 【补充】${genreOther}`;
+            if (!genreStr) genreStr = '未提供';
 
             // 6. 节奏感觉
             const tempoRadio = document.querySelector('input[name="tempo"]:checked');
@@ -72,6 +88,14 @@ function getCheckedValues(name) {
 
             const modulationRadio = document.querySelector('input[name="modulation"]:checked');
             const modulationStr = modulationRadio ? modulationRadio.value : '未提供';
+
+            // 6.5 核心情绪强度
+            const intLonely = document.getElementById('int_lonely') ? document.getElementById('int_lonely').value : '0';
+            const intPower = document.getElementById('int_power') ? document.getElementById('int_power').value : '0';
+            const intPassion = document.getElementById('int_passion') ? document.getElementById('int_passion').value : '0';
+            const intHealing = document.getElementById('int_healing') ? document.getElementById('int_healing').value : '0';
+            const intJoy = document.getElementById('int_joy') ? document.getElementById('int_joy').value : '0';
+            const intRomance = document.getElementById('int_romance') ? document.getElementById('int_romance').value : '0';
 
             // 7. 核心情绪
             let verseEmotions = getCheckedValues('verse_emotion');
@@ -98,6 +122,7 @@ function getCheckedValues(name) {
             const template = `【客户需求参数卡 - 音乐风格定位问卷】
 
 0. 基础设定：
+   - [生成引擎模式]：${engineStr}
    - [用途与时长]：${usageStr}
    - [人声与语言]：${vocalStr}
 
@@ -108,8 +133,11 @@ function getCheckedValues(name) {
    - ${instrumentsStr}
 
 3. 结构与情绪起伏：
-   - [主歌感觉]：${verseStr}
-   - [副歌感觉]：${chorusStr}
+   - [A段能量 (1-5)]：${energyA}
+   - [B段能量 (6-10)]：${energyB}
+   - [桥段动态]：${energyBridgeStr}
+   - [主歌具体感觉]：${verseStr}
+   - [副歌具体感觉]：${chorusStr}
    - [主副歌过渡]：${transitionStr}
    - [歌曲结束方式]：${endingStr}
 
@@ -126,8 +154,9 @@ function getCheckedValues(name) {
    - [转调]：${modulationStr}
 
 6. 核心情绪传达：
-   - [主歌情绪]：${verseEmotionStr}
-   - [副歌情绪]：${chorusEmotionStr}
+   - [核心强度底色]：孤独(${intLonely}/10), 力量(${intPower}/10), 热血(${intPassion}/10), 治愈(${intHealing}/10), 欢快(${intJoy}/10), 浪漫(${intRomance}/10)
+   - [主歌具体情绪]：${verseEmotionStr}
+   - [副歌具体情绪]：${chorusEmotionStr}
 
 7. 歌词文本：
    ${lyricsStr}
@@ -157,24 +186,38 @@ function getCheckedValues(name) {
                 consoleEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }, 100);
 
-            // 2. 发送到邮箱 (FormSubmit AJAX 静默提交，仅能在 GitHub Pages 等服务器环境下运行)
+            // 2. 发送至飞书多维表格 (通过本地代理服务)
             try {
-                // AJAX 静默发送
-                const response = await fetch("https://formsubmit.co/ajax/lhcjhac@gmail.com", {
+                const feishuData = {
+                    "用途与时长": usageStr,
+                    "人声类型与语言要求": vocals,
+                    "目标风格参考": refStyles,
+                    "主奏乐器及配器要求": instruments,
+                    "主歌感觉": verseVibe,
+                    "副歌感觉": chorusVibe,
+                    "主副歌过渡": transitionStr,
+                    "歌曲结束方式": endingStr,
+                    "整体音乐风格": genres,
+                    "节奏及速度 (BPM)": tempoStr,
+                    "调性（Key）": keyStr,
+                    "调式类型": modeStr,
+                    "和声复杂度": harmonyStr,
+                    "是否允许转调": modulationStr,
+                    "主歌核心情绪": verseEmotions,
+                    "副歌核心情绪": chorusEmotions,
+                    "已有歌词提供": lyricsFull || "未提供"
+                };
+
+                const response = await fetch("http://127.0.0.1:5000/submit", {
                     method: "POST",
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
+                        'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({
-                        _subject: "【AXS MUSIC】新客户配置表提交",
-                        _captcha: "false",
-                        message: template
-                    })
+                    body: JSON.stringify(feishuData)
                 });
 
                 if (response.ok) {
-                    submitBtn.innerText = "发送成功！主理人已收到您的参数卡";
+                    submitBtn.innerText = "发送成功！已同步至飞书多维表格";
                     submitBtn.style.backgroundColor = "#10b981"; // 绿
                     submitBtn.style.color = "#fff";
                     submitBtn.style.pointerEvents = "none";
@@ -183,8 +226,8 @@ function getCheckedValues(name) {
                 }
 
             } catch (error) {
-                console.error("Mail Error:", error);
-                submitBtn.innerText = "生成失败，请直接复制下方数据";
+                console.error("Feishu Sync Error:", error);
+                submitBtn.innerText = "自动同步失败，请直接复制下方参数卡";
                 submitBtn.style.backgroundColor = "#ef4444"; // 红
                 submitBtn.style.pointerEvents = "auto";
             }
@@ -227,6 +270,42 @@ document.addEventListener('DOMContentLoaded', () => {
                 bgm.pause();
                 widget.classList.add('muted');
                 text.innerText = 'BGM [OFF]';
+            }
+        });
+    }
+
+    // 风格选择逻辑 (1主 2次)
+    const genreCheckboxes = document.querySelectorAll('input[name="genre"]');
+    let selectedGenres = [];
+
+    genreCheckboxes.forEach(cb => {
+        cb.addEventListener('change', function(e) {
+            if (this.checked) {
+                if (selectedGenres.length >= 3) {
+                    this.checked = false;
+                    alert('最多只能选择3个风格 (1个主风格 + 最多2个次风格)！');
+                    return;
+                }
+                selectedGenres.push(this);
+                updateGenreStyles();
+            } else {
+                selectedGenres = selectedGenres.filter(item => item !== this);
+                updateGenreStyles();
+            }
+        });
+    });
+
+    function updateGenreStyles() {
+        genreCheckboxes.forEach(cb => {
+            const label = cb.closest('.option-label');
+            label.classList.remove('primary-style', 'secondary-style');
+            if (cb.checked) {
+                const index = selectedGenres.indexOf(cb);
+                if (index === 0) {
+                    label.classList.add('primary-style');
+                } else if (index > 0) {
+                    label.classList.add('secondary-style');
+                }
             }
         });
     }
