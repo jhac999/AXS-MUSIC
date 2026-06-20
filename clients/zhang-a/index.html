@@ -9,11 +9,11 @@
         :root {
             --bg-color: #050505;
             --panel-bg: rgba(20, 20, 25, 0.7);
-            --primary-color: #ff2a4b;
+            --primary-color: #ff0036;
             --text-main: #e0e0e0;
             --text-muted: #888;
-            --glass-border: 1px solid rgba(255, 42, 75, 0.2);
-            --glow: 0 0 15px rgba(255, 42, 75, 0.4);
+            --glass-border: 1px solid rgba(255, 0, 54, 0.2);
+            --glow: 0 0 15px rgba(255, 0, 54, 0.4);
         }
 
         * {
@@ -197,8 +197,29 @@
         }
 
         .highlight {
-            color: var(--primary-color);
-            font-weight: bold;
+            color: transparent;
+            -webkit-text-stroke: 1px var(--primary-color);
+            font-weight: 800;
+            text-shadow: 0 0 10px rgba(255, 0, 54, 0.5);
+        }
+
+        .stroked-title {
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 30px;
+            letter-spacing: 3px;
+            color: transparent;
+            -webkit-text-stroke: 1.5px var(--primary-color);
+            text-shadow: 0 0 15px rgba(255, 0, 54, 0.6);
+        }
+
+        .stroked-h4 {
+            color: transparent;
+            -webkit-text-stroke: 1px var(--primary-color);
+            text-shadow: 0 0 10px rgba(255, 0, 54, 0.5);
+            margin-bottom: 10px;
+            font-size: 1rem;
         }
 
         .audio-player {
@@ -542,7 +563,7 @@
             <p>为了保留您心底最原始的呼喊，我们采用了极具杀伤力的 <strong>[Hook 先置] 倒叙结构</strong>。伴奏响起的第一秒，就是对这个世界的当头暴击。</p>
             
             <div class="lyrics-box">
-<div style="text-align: center; font-size: 1.6rem; font-weight: bold; color: var(--primary-color); margin-bottom: 30px; letter-spacing: 3px; text-shadow: 0 0 10px rgba(255,42,75,0.6);">《 gei'ta'dao'le'ma 》</div>
+<div class="stroked-title">《 gei'ta'dao'le'ma 》</div>
 
 <strong>[副歌 / 双人合唱 —— 开篇即高潮]</strong>
 gei ta dao le ma
@@ -648,8 +669,8 @@ I say “I’m fine”
                 </div>
             </div>
 
-            <div class="audio-player" style="border-color: rgba(255, 42, 75, 0.5);">
-                <h4 style="color: var(--primary-color);">▶ 方案D：流行弱化版 (拦截：物理失格)</h4>
+            <div class="audio-player" style="border-color: rgba(255, 0, 54, 0.5);">
+                <h4 class="stroked-h4">▶ 方案D：流行弱化版 (拦截：物理失格)</h4>
                 <audio src="./audio/gtdlm_pop.mp3"></audio>
                 <div class="custom-player">
                     <button class="play-btn">▶</button>
