@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AXS MUSIC STUDIO - 全案汇报书 (张阿)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #050505;
+            --panel-bg: rgba(20, 20, 25, 0.7);
+            --primary-color: #ff2a4b;
+            --text-main: #e0e0e0;
+            --text-muted: #888;
+            --glass-border: 1px solid rgba(255, 42, 75, 0.2);
+            --glow: 0 0 15px rgba(255, 42, 75, 0.4);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            background-image: 
+                linear-gradient(to bottom, rgba(10, 5, 5, 0.5) 0%, rgba(5, 5, 5, 0.95) 100%),
+                url('none'),
+                radial-gradient(circle at 50% 20%, rgba(255, 78, 0, 0.15), transparent 40%),
+                radial-gradient(circle at 85% 30%, rgba(255, 170, 0, 0.05), transparent 25%);
+            background-size: 100% 100%, cover, auto, auto;
+            background-position: center, top center, center, center;
+            background-attachment: fixed;
+            background-blend-mode: normal, overlay, normal, normal;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .brand {
+            font-family: 'Cinzel', serif;
+            font-size: 2.4rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #fff;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+        }
+
+        .brand-subtitle {
+            font-family: "Songti SC", "SimSun", serif;
+            font-size: 0.95rem;
+            font-weight: 900;
+            letter-spacing: 14px;
+            margin-left: 14px;
+            color: #ffaa00; /* Core of the flame */
+            text-shadow: 
+                0 0 5px rgba(255, 170, 0, 0.8),
+                0 0 15px rgba(255, 78, 0, 0.9),
+                0 0 30px rgba(255, 0, 0, 0.6);
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-family: "Songti SC", "SimSun", serif;
+            font-size: 2.8rem;
+            font-weight: 400;
+            letter-spacing: 8px;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #fff, #ddd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .meta-card {
+            background: var(--panel-bg);
+            backdrop-filter: blur(10px);
+            border: var(--glass-border);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 40px;
+            box-shadow: var(--glow);
+            transition: box-shadow 0.4s ease, transform 0.4s ease;
+        }
+
+        .meta-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(255, 42, 75, 0.6);
+        }
+
+        .meta-item {
+            text-align: center;
+        }
+
+        .meta-label {
+            font-size: 1rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .meta-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #fff;
+            margin-top: 8px;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255,255,255,0.2);
+        }
+
+        section {
+            background: var(--panel-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        section:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 42, 75, 0.5);
+            box-shadow: 0 10px 30px rgba(255, 42, 75, 0.15), inset 0 0 15px rgba(255, 42, 75, 0.05);
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 20px;
+            background: var(--primary-color);
+            border-radius: 2px;
+            box-shadow: var(--glow);
+        }
+
+        .lyrics-box {
+            position: relative;
+            background: rgba(0, 0, 0, 0.5);
+            border-left: 3px solid var(--text-muted);
+            padding: 30px;
+            border-radius: 0 8px 8px 0;
+            font-family: "Courier New", Courier, monospace;
+            color: #eee;
+            white-space: pre-wrap;
+            margin: 20px 0;
+            overflow: hidden;
+            z-index: 1;
+            box-shadow: inset 0 0 60px rgba(0,0,0,0.8);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+            transition: border-color 0.4s ease;
+        }
+        
+        .lyrics-box:hover {
+            border-left-color: var(--primary-color);
+            box-shadow: inset 0 0 60px rgba(0,0,0,0.9), 0 0 15px rgba(255,42,75,0.2);
+        }
+
+        .lyrics-box::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url('none');
+            background-size: cover;
+            background-position: center 20%;
+            opacity: 0.35;
+            filter: contrast(1.2) brightness(0.4) saturate(1.2);
+            transform: scaleX(-1);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .highlight {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .audio-player {
+            margin-top: 20px;
+            background: rgba(0,0,0,0.5);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        .audio-player:hover {
+            background: rgba(20, 10, 15, 0.8);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px rgba(255, 42, 75, 0.3);
+            transform: scale(1.02);
+        }
+
+        .audio-player h4 {
+            margin-bottom: 10px;
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        .custom-player {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .play-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 15px rgba(255, 42, 75, 0.6);
+            transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+            flex-shrink: 0;
+        }
+        .play-btn:hover {
+            transform: scale(1.1);
+            background: #ff4a6b;
+            box-shadow: 0 0 25px rgba(255, 42, 75, 0.9);
+        }
+        .progress-container {
+            flex-grow: 1;
+            background: rgba(255,255,255,0.1);
+            height: 6px;
+            border-radius: 3px;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+        }
+        .progress-bar {
+            height: 100%;
+            background: var(--primary-color);
+            width: 0%;
+            transition: width 0.1s linear;
+            box-shadow: 0 0 10px rgba(255, 42, 75, 0.8);
+        }
+        .time-display {
+            font-size: 0.85rem;
+            color: #ccc;
+            min-width: 45px;
+            text-align: right;
+            font-family: monospace;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #bbb;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            margin-left: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            letter-spacing: 2px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+            vertical-align: middle;
+            text-transform: uppercase;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .boss-watermark {
+            position: fixed;
+            bottom: -50px;
+            right: -50px;
+            width: 450px;
+            height: 450px;
+            background-image: url('none');
+            background-size: cover;
+            background-position: center 20%;
+            opacity: 0.12;
+            pointer-events: none;
+            filter: grayscale(100%) contrast(1.4) drop-shadow(0 0 20px var(--primary-color));
+            mask-image: radial-gradient(circle at center, black 40%, transparent 70%);
+            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 70%);
+            z-index: 0;
+            animation: breathe 8s infinite alternate ease-in-out;
+        }
+
+        @keyframes breathe {
+            0% { opacity: 0.08; transform: scale(1); }
+            100% { opacity: 0.18; transform: scale(1.02); }
+        }
+
+        .footer-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+            border: 2px solid var(--primary-color);
+            box-shadow: var(--glow);
+            filter: grayscale(70%) contrast(1.2);
+            object-fit: cover;
+            transition: transform 0.3s, filter 0.3s, box-shadow 0.3s;
+        }
+        
+        .footer-logo:hover {
+            transform: scale(1.1);
+            filter: grayscale(0%) contrast(1.1);
+            box-shadow: 0 0 25px rgba(255, 42, 75, 0.8);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="boss-watermark"></div>
+    <div class="container">
+        <header>
+            <div class="brand">AXS Music Studio</div>
+            <div class="brand-subtitle">美学 × 系统</div>
+            <h1>制作全案</h1>
+        </header>
+
+        <div class="meta-card">
+            <div class="meta-item">
+                <div class="meta-label">致尊敬的客户</div>
+                <div class="meta-value">张阿</div>
+            </div>
+            <div class="meta-item">
+                <div class="meta-label">项目曲名</div>
+                <div class="meta-value">《gei'ta'dao'le'ma》</div>
+            </div>
+        </div>
+
+        <section>
+            <h2>序言：潜入无光之域</h2>
+            <p>张先生，您好。</p>
+            <br>
+            <p>我们收到了您的委托表单。您所传达的那种被钢铁森林吞噬的失重感、想要逃离社会既定齿轮的隐忍挣扎，以及在无光废墟里的无声呐喊，深深击中了我们。</p>
+            <p>一首真正的歌，绝不是用合成器堆砌出来的，而是用这种极具压迫感的情感血肉磨出来的。在过去的 48 小时里，AXS 音乐重工业基地的 15 位虚拟专家为您召开了三轮闭门会议。以下是我们为您出具的最终制作全案。</p>
+        </section>
+
+        <section>
+            <h2>🎼 壹：物理对标与声学底色 <span class="badge">The Blueprint</span></h2>
+            <p>为了承载您那种“压抑到极点后的爆发”，我们调取了全球工业摇滚与暗黑流行榜单排行前十的数首白金级金曲作为声学对标，为您锁死了两大物理常数：</p>
+            <br>
+            <ul>
+                <li><strong>节拍 (105 BPM)</strong>：这比人的正常心跳略快，像是在极度焦虑下的喘息频率。</li>
+                <li><strong>调性 (D Minor)</strong>：这是古典乐中最适合表达悲剧英雄感与宿命感的调性。</li>
+                <li><strong>参考方向</strong>：<span class="highlight">The Weeknd</span> 的电子质感 + <span class="highlight">Nine Inch Nails</span> 的暗黑工业感。</li>
+                <li><strong>参考和弦</strong>：主歌 <code>Dm9 - Bbmaj7 - F - C</code>（压抑失重） | 副歌 <code>Dm - Bb - C - Am</code>（硬派悲剧）。</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>✒️ 贰：词作大赏 <span class="badge">The Lyrics</span></h2>
+            <p>为了保留您心底最原始的呼喊，我们采用了极具杀伤力的 <strong>[Hook 先置] 倒叙结构</strong>。伴奏响起的第一秒，就是对这个世界的当头暴击。</p>
+            
+            <div class="lyrics-box">
+<div style="text-align: center; font-size: 1.6rem; font-weight: bold; color: var(--primary-color); margin-bottom: 30px; letter-spacing: 3px; text-shadow: 0 0 10px rgba(255,42,75,0.6);">《 gei'ta'dao'le'ma 》</div>
+
+<strong>[副歌 / 双人合唱 —— 开篇即高潮]</strong>
+gei ta dao le ma
+你懂就坐这儿，不懂就算了
+城市很大，人却很少
+我们都忙着活着，不解释了
+
+gei ta dao le ma
+一句话就够，不用再拉扯
+明白的人在对面点头
+不明白的转身就路过
+
+<strong>[Verse 1 / 演唱]</strong>
+来这座城，就没打算回头
+地铁车厢很挤，心却越晃越空
+白天困在工位，晚上卖给失眠
+说不上太难，也绝对不算轻松
+钱没赚够，事从没少过
+人越来越会笑，真心话越来越少说
+
+<strong>[Verse 2 / 说唱]</strong>
+They ask me “you good?”
+I say “I’m fine”
+其实这套潜规则，都懂，不用拆开
+楼盖得越高，人反而越走越远
+把情绪放低，让生活继续往前
+没谁欠谁，也别幻想着依赖
+成年人的丛林法则，就是别太期待
+
+<strong>[Outro / 合唱渐隐]</strong>
+不说了，都懂了
+或者，也都不用懂了...
+            </div>
+        </section>
+
+        <section>
+            <h2>🎛️ 叁：工业级编曲与混音预告 <span class="badge">The Production</span></h2>
+            <ul>
+                <li><strong>开篇副歌 [爆发/释放]</strong>：厚重的电吉他音墙砸下，叠加 Prophet-5 合成器的撕裂铺底。</li>
+                <li><strong>主歌 [小律动]</strong>：Moog 模拟低音脉冲与 LinnDrum 鼓机交织，提供克制律动。</li>
+                <li><strong>双人声处理</strong>：Rap 极度贴耳 (Close-mic'd)，合唱则用宽阔的厅堂混响 (Large Hall Reverb) 撕开空间。</li>
+                <li><strong>母带压迫</strong>：最极端的纽约式并联压缩，母带响度硬顶到恐怖的 <span class="highlight">-8 LUFS</span>。</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>🎧 肆：成品demo听审预演 <span class="badge">Demo Preview</span></h2>
+            <p>我们为您生成了多个音频版本，您可以直接点击下方播放器进行试听。建议佩戴高品质耳机以感受极端的低频下潜与压迫感。</p>
+            
+            <div class="audio-player">
+                <h4>▶ 方案A：标准暗黑工业版 (推荐听审)</h4>
+                <audio src="./audio/gtdlm.mp3"></audio>
+                <div class="custom-player">
+                    <button class="play-btn">▶</button>
+                    <div class="progress-container"><div class="progress-bar"></div></div>
+                    <div class="time-display">0:00</div>
+                </div>
+            </div>
+            
+            <div class="audio-player">
+                <h4>▶ 方案B：极简金属版 (完美复刻结构)</h4>
+                <audio src="./audio/gtdlm_m.mp3"></audio>
+                <div class="custom-player">
+                    <button class="play-btn">▶</button>
+                    <div class="progress-container"><div class="progress-bar"></div></div>
+                    <div class="time-display">0:00</div>
+                </div>
+            </div>
+
+            <div class="audio-player">
+                <h4>▶ 方案C：重型合成器波版 (警告：调性偏离大调)</h4>
+                <audio src="./audio/buyonglache.mp3"></audio>
+                <div class="custom-player">
+                    <button class="play-btn">▶</button>
+                    <div class="progress-container"><div class="progress-bar"></div></div>
+                    <div class="time-display">0:00</div>
+                </div>
+            </div>
+
+            <div class="audio-player" style="border-color: rgba(255, 42, 75, 0.5);">
+                <h4 style="color: var(--primary-color);">▶ 方案D：流行弱化版 (拦截：物理失格)</h4>
+                <audio src="./audio/gtdlm_pop.mp3"></audio>
+                <div class="custom-player">
+                    <button class="play-btn">▶</button>
+                    <div class="progress-container"><div class="progress-bar"></div></div>
+                    <div class="time-display">0:00</div>
+                </div>
+            </div>
+        </section>
+
+        <footer style="text-align: center; margin-top: 60px; padding-bottom: 40px; color: var(--text-muted); font-size: 0.9rem;">
+            <img src="none" class="footer-logo" alt="主理人">
+            <p style="color: #fff; font-weight: bold; letter-spacing: 3px;">AXS MUSIC STUDIO</p>
+            <p style="margin-top: 5px; opacity: 0.6; font-family: monospace;">[ PRODUCER / CYBERPUNK / SYNTHWAVE ]</p>
+        </footer>
+    </div>
+    <script>
+        document.querySelectorAll('.audio-player').forEach(container => {
+            const audio = container.querySelector('audio');
+            const playBtn = container.querySelector('.play-btn');
+            const progressBar = container.querySelector('.progress-bar');
+            const progressContainer = container.querySelector('.progress-container');
+            const timeDisplay = container.querySelector('.time-display');
+
+            playBtn.addEventListener('click', () => {
+                if(audio.paused) {
+                    document.querySelectorAll('audio').forEach(a => {
+                        if(a !== audio) {
+                            a.pause();
+                            const btn = a.parentElement.querySelector('.play-btn');
+                            if(btn) btn.innerHTML = '▶';
+                        }
+                    });
+                    audio.play();
+                    playBtn.innerHTML = '⏸';
+                } else {
+                    audio.pause();
+                    playBtn.innerHTML = '▶';
+                }
+            });
+
+            audio.addEventListener('timeupdate', () => {
+                if(!audio.duration) return;
+                const percent = (audio.currentTime / audio.duration) * 100;
+                progressBar.style.width = percent + '%';
+                
+                let currentMins = Math.floor(audio.currentTime / 60);
+                let currentSecs = Math.floor(audio.currentTime % 60);
+                if(currentSecs < 10) currentSecs = '0' + currentSecs;
+                timeDisplay.textContent = `${currentMins}:${currentSecs}`;
+            });
+
+            progressContainer.addEventListener('click', (e) => {
+                if(!audio.duration) return;
+                const rect = progressContainer.getBoundingClientRect();
+                const pos = (e.clientX - rect.left) / rect.width;
+                audio.currentTime = pos * audio.duration;
+            });
+
+            audio.addEventListener('ended', () => {
+                playBtn.innerHTML = '▶';
+                progressBar.style.width = '0%';
+                timeDisplay.textContent = '0:00';
+            });
+        });
+    </script>
+</body>
+</html>
