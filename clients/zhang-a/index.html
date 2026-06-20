@@ -426,6 +426,10 @@
             .lyrics-box {
                 padding: 15px;
             }
+            .lyrics-box > div:first-child {
+                font-size: 1.2rem !important;
+                letter-spacing: 1px !important;
+            }
             section {
                 padding: 15px;
             }
@@ -435,6 +439,19 @@
             }
             h2 {
                 font-size: 1.2rem;
+                flex-wrap: wrap;
+            }
+            .badge {
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+            .meta-card {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .meta-value {
+                font-size: 1.5rem;
+                word-break: break-word;
             }
             .custom-player {
                 flex-wrap: wrap;
