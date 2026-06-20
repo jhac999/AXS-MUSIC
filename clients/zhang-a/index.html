@@ -9,11 +9,11 @@
         :root {
             --bg-color: #050505;
             --panel-bg: rgba(20, 20, 25, 0.7);
-            --primary-color: #ff0036;
+            --primary-color: #b00020;
             --text-main: #e0e0e0;
             --text-muted: #888;
-            --glass-border: 1px solid rgba(255, 0, 54, 0.2);
-            --glow: 0 0 15px rgba(255, 0, 54, 0.4);
+            --glass-border: 1px solid rgba(176, 0, 32, 0.2);
+            --glow: 0 0 15px rgba(176, 0, 32, 0.4);
         }
 
         * {
@@ -103,7 +103,7 @@
 
         .meta-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 0 30px rgba(255, 42, 75, 0.6);
+            box-shadow: 0 0 30px rgba(176, 0, 32, 0.6);
         }
 
         .meta-item {
@@ -138,8 +138,8 @@
 
         section:hover {
             transform: translateY(-5px);
-            border-color: rgba(255, 42, 75, 0.5);
-            box-shadow: 0 10px 30px rgba(255, 42, 75, 0.15), inset 0 0 15px rgba(255, 42, 75, 0.05);
+            border-color: rgba(176, 0, 32, 0.5);
+            box-shadow: 0 10px 30px rgba(176, 0, 32, 0.15), inset 0 0 15px rgba(176, 0, 32, 0.05);
         }
 
         h2 {
@@ -180,7 +180,7 @@
         
         .lyrics-box:hover {
             border-left-color: var(--primary-color);
-            box-shadow: inset 0 0 60px rgba(0,0,0,0.9), 0 0 15px rgba(255,42,75,0.2);
+            box-shadow: inset 0 0 60px rgba(0,0,0,0.9), 0 0 15px rgba(176, 0, 32,0.2);
         }
 
         .lyrics-box::before {
@@ -199,7 +199,7 @@
         .highlight {
             color: var(--primary-color);
             font-weight: 800;
-            text-shadow: 0 0 10px rgba(255, 0, 54, 0.4);
+            text-shadow: 0 0 10px rgba(176, 0, 32, 0.4);
         }
 
         .stroked-title {
@@ -209,12 +209,12 @@
             margin-bottom: 30px;
             letter-spacing: 3px;
             color: var(--primary-color);
-            text-shadow: 0 0 15px rgba(255, 0, 54, 0.6);
+            text-shadow: 0 0 15px rgba(176, 0, 32, 0.6);
         }
 
         .stroked-h4 {
             color: var(--primary-color);
-            text-shadow: 0 0 8px rgba(255, 0, 54, 0.4);
+            text-shadow: 0 0 8px rgba(176, 0, 32, 0.4);
             margin-bottom: 10px;
             font-size: 1rem;
         }
@@ -231,7 +231,7 @@
         .audio-player:hover {
             background: rgba(20, 10, 15, 0.8);
             border-color: var(--primary-color);
-            box-shadow: 0 0 20px rgba(255, 42, 75, 0.3);
+            box-shadow: 0 0 20px rgba(176, 0, 32, 0.3);
             transform: scale(1.02);
         }
 
@@ -259,14 +259,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 0 15px rgba(255, 42, 75, 0.6);
+            box-shadow: 0 0 15px rgba(176, 0, 32, 0.6);
             transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
             flex-shrink: 0;
         }
         .play-btn:hover {
             transform: scale(1.1);
             background: #ff4a6b;
-            box-shadow: 0 0 25px rgba(255, 42, 75, 0.9);
+            box-shadow: 0 0 25px rgba(176, 0, 32, 0.9);
         }
         .progress-container {
             flex-grow: 1;
@@ -282,7 +282,7 @@
             background: var(--primary-color);
             width: 0%;
             transition: width 0.1s linear;
-            box-shadow: 0 0 10px rgba(255, 42, 75, 0.8);
+            box-shadow: 0 0 10px rgba(176, 0, 32, 0.8);
         }
         .time-display {
             font-size: 0.85rem;
@@ -432,12 +432,12 @@
             border-radius: 50%;
             background: var(--primary-color);
             cursor: pointer;
-            box-shadow: 0 0 10px rgba(255, 42, 75, 0.6);
+            box-shadow: 0 0 10px rgba(176, 0, 32, 0.6);
             transition: transform 0.2s, box-shadow 0.2s;
         }
         .volume-slider:hover::-webkit-slider-thumb {
             transform: scale(1.3);
-            box-shadow: 0 0 15px rgba(255, 42, 75, 1);
+            box-shadow: 0 0 15px rgba(176, 0, 32, 1);
         }
 
         /* 优化项4：缓冲加载动画 */
@@ -509,7 +509,7 @@
         .footer-logo:hover {
             transform: scale(1.1);
             filter: grayscale(0%) contrast(1.1);
-            box-shadow: 0 0 25px rgba(255, 42, 75, 0.8);
+            box-shadow: 0 0 25px rgba(176, 0, 32, 0.8);
         }
 
     </style>
@@ -599,7 +599,7 @@ I say “I’m fine”
         <section>
             <h2>🎛️ 叁：工业级编曲与混音预告 <span class="badge">The Production</span></h2>
             
-            <div style="background: rgba(255, 42, 75, 0.05); border-left: 3px solid var(--primary-color); padding: 15px 20px; margin: 20px 0; border-radius: 0 4px 4px 0;">
+            <div style="background: rgba(176, 0, 32, 0.05); border-left: 3px solid var(--primary-color); padding: 15px 20px; margin: 20px 0; border-radius: 0 4px 4px 0;">
                 <p style="margin: 0; color: #eee; font-size: 0.95rem; line-height: 1.8; letter-spacing: 1px; font-weight: 300;">
                     <strong style="color: var(--primary-color); font-weight: 600; font-size: 1.05rem; letter-spacing: 2px;">[ 国际级声学专家矩阵护航 ]</strong><br>
                     AXS 音乐工业基地由多位拥有全球化视野的资深混音与母带专家联合阵列。我们不仅掌管着严苛的物理声学硬件与前沿建模技术，更具备对重型、暗黑音乐极度精准的审美嗅觉。本案的每一轨声波，都将由我们的专家组进行微米级的频段切削与动态重塑，确保最终母带在任何播放介质上，都能为您呈现出白金发行级的工业压迫感与无懈可击的全景空间。
@@ -666,7 +666,7 @@ I say “I’m fine”
                 </div>
             </div>
 
-            <div class="audio-player" style="border-color: rgba(255, 0, 54, 0.5);">
+            <div class="audio-player" style="border-color: rgba(176, 0, 32, 0.5);">
                 <h4 class="stroked-h4">▶ 方案D：流行弱化版 (拦截：物理失格)</h4>
                 <audio src="./audio/gtdlm_pop.mp3"></audio>
                 <div class="custom-player">
