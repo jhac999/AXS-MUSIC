@@ -292,17 +292,37 @@
             pointer-events: none;
             mix-blend-mode: screen;
             animation: breathe-left 8s infinite alternate ease-in-out;
+            /* 优化项5：渲染性能优化 */
+            will-change: transform, opacity;
         }
 
         @keyframes breathe-left {
             0% { opacity: 0.08; transform: translateY(-50%) scale(1); }
             100% { opacity: 0.18; transform: translateY(-50%) scale(1.02); }
         }
+
+        /* 优化项2：视觉化波形基础结构 */
+        .waveform {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            height: 20px;
+            margin: 0 10px;
+            opacity: 0.3;
+            transition: opacity 0.3s;
+        }
+        .waveform.playing {
+            opacity: 1;
+        }
+        .waveform.playing .wave-bar {
+            animation-play-state: running;
+        }
         .wave-bar {
             width: 3px;
             background: var(--primary-color);
             border-radius: 2px;
             animation: bounce 1s infinite ease-in-out;
+            animation-play-state: paused;
         }
         .wave-bar:nth-child(1) { height: 40%; animation-delay: -1.2s; }
         .wave-bar:nth-child(2) { height: 80%; animation-delay: -0.9s; }
@@ -361,6 +381,67 @@
             -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 70%);
             z-index: 0;
             animation: breathe 8s infinite alternate ease-in-out;
+            /* 优化项5：渲染性能优化 */
+            will-change: transform, opacity;
+        }
+
+        /* 优化项3：音量控制滑块样式 */
+        .volume-slider {
+            -webkit-appearance: none;
+            width: 60px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            outline: none;
+            margin-left: 10px;
+            transition: all 0.3s;
+        }
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(255, 42, 75, 0.6);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .volume-slider:hover::-webkit-slider-thumb {
+            transform: scale(1.3);
+            box-shadow: 0 0 15px rgba(255, 42, 75, 1);
+        }
+
+        /* 优化项4：缓冲加载动画 */
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 优化项1：移动端弹性适配 */
+        @media (max-width: 768px) {
+            .brand-subtitle {
+                letter-spacing: 6px;
+                margin-left: 6px;
+            }
+            .lyrics-box {
+                padding: 15px;
+            }
+            section {
+                padding: 15px;
+            }
+            h1 {
+                font-size: 2rem;
+                letter-spacing: 4px;
+            }
+            h2 {
+                font-size: 1.2rem;
+            }
+            .custom-player {
+                flex-wrap: wrap;
+            }
+            .volume-slider {
+                width: 50px;
+            }
         }
 
         @keyframes breathe {
@@ -489,8 +570,14 @@ I say “I’m fine”
                 <audio src="./audio/gtdlm.mp3"></audio>
                 <div class="custom-player">
                     <button class="play-btn">▶</button>
+                    <!-- 优化项2：波形联动 -->
+                    <div class="waveform">
+                        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                    </div>
                     <div class="progress-container"><div class="progress-bar"></div></div>
                     <div class="time-display">0:00</div>
+                    <!-- 优化项3：音量控制滑块 -->
+                    <input type="range" class="volume-slider" min="0" max="1" step="0.01" value="1">
                 </div>
             </div>
             
@@ -499,8 +586,14 @@ I say “I’m fine”
                 <audio src="./audio/gtdlm_m.mp3"></audio>
                 <div class="custom-player">
                     <button class="play-btn">▶</button>
+                    <!-- 优化项2：波形联动 -->
+                    <div class="waveform">
+                        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                    </div>
                     <div class="progress-container"><div class="progress-bar"></div></div>
                     <div class="time-display">0:00</div>
+                    <!-- 优化项3：音量控制滑块 -->
+                    <input type="range" class="volume-slider" min="0" max="1" step="0.01" value="1">
                 </div>
             </div>
 
@@ -509,8 +602,14 @@ I say “I’m fine”
                 <audio src="./audio/buyonglache.mp3"></audio>
                 <div class="custom-player">
                     <button class="play-btn">▶</button>
+                    <!-- 优化项2：波形联动 -->
+                    <div class="waveform">
+                        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                    </div>
                     <div class="progress-container"><div class="progress-bar"></div></div>
                     <div class="time-display">0:00</div>
+                    <!-- 优化项3：音量控制滑块 -->
+                    <input type="range" class="volume-slider" min="0" max="1" step="0.01" value="1">
                 </div>
             </div>
 
@@ -519,8 +618,14 @@ I say “I’m fine”
                 <audio src="./audio/gtdlm_pop.mp3"></audio>
                 <div class="custom-player">
                     <button class="play-btn">▶</button>
+                    <!-- 优化项2：波形联动 -->
+                    <div class="waveform">
+                        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                    </div>
                     <div class="progress-container"><div class="progress-bar"></div></div>
                     <div class="time-display">0:00</div>
+                    <!-- 优化项3：音量控制滑块 -->
+                    <input type="range" class="volume-slider" min="0" max="1" step="0.01" value="1">
                 </div>
             </div>
         </section>
@@ -539,20 +644,27 @@ I say “I’m fine”
             const progressContainer = container.querySelector('.progress-container');
             const timeDisplay = container.querySelector('.time-display');
 
+            const waveform = container.querySelector('.waveform');
+            const volumeSlider = container.querySelector('.volume-slider');
+
             playBtn.addEventListener('click', () => {
                 if(audio.paused) {
                     document.querySelectorAll('audio').forEach(a => {
                         if(a !== audio) {
                             a.pause();
                             const btn = a.parentElement.querySelector('.play-btn');
+                            const wf = a.parentElement.querySelector('.waveform');
                             if(btn) btn.innerHTML = '▶';
+                            if(wf) wf.classList.remove('playing');
                         }
                     });
                     audio.play();
                     playBtn.innerHTML = '⏸';
+                    if(waveform) waveform.classList.add('playing');
                 } else {
                     audio.pause();
                     playBtn.innerHTML = '▶';
+                    if(waveform) waveform.classList.remove('playing');
                 }
             });
 
@@ -574,10 +686,29 @@ I say “I’m fine”
                 audio.currentTime = pos * audio.duration;
             });
 
+            /* 优化项3：音量控制事件绑定 */
+            if(volumeSlider) {
+                volumeSlider.addEventListener('input', (e) => {
+                    audio.volume = e.target.value;
+                });
+            }
+
+            /* 优化项4：缓冲加载状态事件监听 */
+            audio.addEventListener('waiting', () => {
+                playBtn.innerHTML = '⟳';
+                playBtn.style.animation = 'spin 1s linear infinite';
+            });
+
+            audio.addEventListener('canplay', () => {
+                playBtn.style.animation = 'none';
+                playBtn.innerHTML = audio.paused ? '▶' : '⏸';
+            });
+
             audio.addEventListener('ended', () => {
                 playBtn.innerHTML = '▶';
                 progressBar.style.width = '0%';
                 timeDisplay.textContent = '0:00';
+                if(waveform) waveform.classList.remove('playing');
             });
         });
     </script>
