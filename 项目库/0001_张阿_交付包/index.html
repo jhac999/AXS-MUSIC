@@ -9,11 +9,11 @@
         :root {
             --bg-color: #050505;
             --panel-bg: rgba(20, 20, 25, 0.7);
-            --primary-color: #ff2a4b;
+            --primary-color: #ff3399;
             --text-main: #e0e0e0;
             --text-muted: #888;
-            --glass-border: 1px solid rgba(255, 42, 75, 0.2);
-            --glow: 0 0 15px rgba(255, 42, 75, 0.4);
+            --glass-border: 1px solid rgba(255, 51, 153, 0.2);
+            --glow: 0 0 15px rgba(255, 51, 153, 0.4);
         }
 
         * {
@@ -103,7 +103,7 @@
 
         .meta-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 0 30px rgba(255, 42, 75, 0.6);
+            box-shadow: 0 0 30px rgba(255, 51, 153, 0.6);
         }
 
         .meta-item {
@@ -138,8 +138,8 @@
 
         section:hover {
             transform: translateY(-5px);
-            border-color: rgba(255, 42, 75, 0.5);
-            box-shadow: 0 10px 30px rgba(255, 42, 75, 0.15), inset 0 0 15px rgba(255, 42, 75, 0.05);
+            border-color: rgba(255, 51, 153, 0.5);
+            box-shadow: 0 10px 30px rgba(255, 51, 153, 0.15), inset 0 0 15px rgba(255, 51, 153, 0.05);
         }
 
         h2 {
@@ -180,26 +180,43 @@
         
         .lyrics-box:hover {
             border-left-color: var(--primary-color);
-            box-shadow: inset 0 0 60px rgba(0,0,0,0.9), 0 0 15px rgba(255,42,75,0.2);
+            box-shadow: inset 0 0 60px rgba(0,0,0,0.9), 0 0 15px rgba(255, 51, 153,0.2);
         }
 
         .lyrics-box::before {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background-image: url('./ethnic_fire_totem.png');
+            background-image: url('./audio_cables_bg.png');
             background-size: cover;
-            background-position: center 20%;
-            opacity: 0.35;
-            filter: contrast(1.2) brightness(0.4) saturate(1.2);
-            transform: scaleX(-1);
+            background-position: center;
+            opacity: 0.4;
+            filter: grayscale(80%) brightness(0.6);
             z-index: -1;
             pointer-events: none;
         }
 
         .highlight {
             color: var(--primary-color);
-            font-weight: bold;
+            font-weight: 800;
+            text-shadow: 0 0 10px rgba(255, 51, 153, 0.4);
+        }
+
+        .stroked-title {
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 30px;
+            letter-spacing: 3px;
+            color: var(--primary-color);
+            text-shadow: 0 0 15px rgba(255, 51, 153, 0.6);
+        }
+
+        .stroked-h4 {
+            color: var(--primary-color);
+            text-shadow: 0 0 8px rgba(255, 51, 153, 0.4);
+            margin-bottom: 10px;
+            font-size: 1rem;
         }
 
         .audio-player {
@@ -214,7 +231,7 @@
         .audio-player:hover {
             background: rgba(20, 10, 15, 0.8);
             border-color: var(--primary-color);
-            box-shadow: 0 0 20px rgba(255, 42, 75, 0.3);
+            box-shadow: 0 0 20px rgba(255, 51, 153, 0.3);
             transform: scale(1.02);
         }
 
@@ -242,14 +259,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 0 15px rgba(255, 42, 75, 0.6);
+            box-shadow: 0 0 15px rgba(255, 51, 153, 0.6);
             transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
             flex-shrink: 0;
         }
         .play-btn:hover {
             transform: scale(1.1);
             background: #ff4a6b;
-            box-shadow: 0 0 25px rgba(255, 42, 75, 0.9);
+            box-shadow: 0 0 25px rgba(255, 51, 153, 0.9);
         }
         .progress-container {
             flex-grow: 1;
@@ -265,7 +282,7 @@
             background: var(--primary-color);
             width: 0%;
             transition: width 0.1s linear;
-            box-shadow: 0 0 10px rgba(255, 42, 75, 0.8);
+            box-shadow: 0 0 10px rgba(255, 51, 153, 0.8);
         }
         .time-display {
             font-size: 0.85rem;
@@ -292,17 +309,37 @@
             pointer-events: none;
             mix-blend-mode: screen;
             animation: breathe-left 8s infinite alternate ease-in-out;
+            /* 优化项5：渲染性能优化 */
+            will-change: transform, opacity;
         }
 
         @keyframes breathe-left {
             0% { opacity: 0.08; transform: translateY(-50%) scale(1); }
             100% { opacity: 0.18; transform: translateY(-50%) scale(1.02); }
         }
+
+        /* 优化项2：视觉化波形基础结构 */
+        .waveform {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            height: 20px;
+            margin: 0 10px;
+            opacity: 0.3;
+            transition: opacity 0.3s;
+        }
+        .waveform.playing {
+            opacity: 1;
+        }
+        .waveform.playing .wave-bar {
+            animation-play-state: running;
+        }
         .wave-bar {
             width: 3px;
             background: var(--primary-color);
             border-radius: 2px;
             animation: bounce 1s infinite ease-in-out;
+            animation-play-state: paused;
         }
         .wave-bar:nth-child(1) { height: 40%; animation-delay: -1.2s; }
         .wave-bar:nth-child(2) { height: 80%; animation-delay: -0.9s; }
@@ -327,22 +364,24 @@
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
         .badge {
-            display: inline-block;
-            padding: 3px 10px;
-            background: rgba(255, 255, 255, 0.05);
-            color: #bbb;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            margin-left: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            letter-spacing: 2px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 500;
+            background: var(--primary-color);
+            color: #050505;
+            padding: 2px 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 900;
+            border: none;
             vertical-align: middle;
-            text-transform: uppercase;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            margin-left: 10px;
+            text-shadow: none;
+            box-shadow: 0 0 10px rgba(255, 51, 153, 0.5);
+            letter-spacing: 1px;
+        }
+
+        .badge:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 3px 3px 8px rgba(0,0,0,0.6), 0 0 15px rgba(255, 170, 0, 0.4);
         }
 
         .boss-watermark {
@@ -361,6 +400,94 @@
             -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 70%);
             z-index: 0;
             animation: breathe 8s infinite alternate ease-in-out;
+            /* 优化项5：渲染性能优化 */
+            will-change: transform, opacity;
+        }
+
+        /* 优化项3：音量控制滑块样式 */
+        .volume-slider {
+            -webkit-appearance: none;
+            width: 60px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            outline: none;
+            margin-left: 10px;
+            transition: all 0.3s;
+        }
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(255, 51, 153, 0.6);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .volume-slider:hover::-webkit-slider-thumb {
+            transform: scale(1.3);
+            box-shadow: 0 0 15px rgba(255, 51, 153, 1);
+        }
+
+        /* 优化项4：缓冲加载动画 */
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 优化项1：移动端弹性适配 */
+        @media (max-width: 768px) {
+            .brand-subtitle {
+                letter-spacing: 6px;
+                margin-left: 6px;
+            }
+            .lyrics-box {
+                padding: 15px;
+            }
+            .lyrics-box > div:first-child {
+                font-size: 1.2rem !important;
+                letter-spacing: 1px !important;
+            }
+            section {
+                padding: 15px;
+            }
+            h1 {
+                font-size: 2rem;
+                letter-spacing: 4px;
+            }
+            h2 {
+                font-size: 1.2rem;
+                flex-wrap: wrap;
+            }
+        .badge {
+            background: var(--primary-color);
+            color: #050505;
+            padding: 2px 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 900;
+            border: none;
+            vertical-align: middle;
+            margin-left: 10px;
+            text-shadow: none;
+            box-shadow: 0 0 10px rgba(255, 51, 153, 0.5);
+            letter-spacing: 1px;
+        }
+            .meta-card {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .meta-value {
+                font-size: 1.5rem;
+                word-break: break-word;
+            }
+            .custom-player {
+                flex-wrap: wrap;
+            }
+            .volume-slider {
+                width: 50px;
+            }
         }
 
         @keyframes breathe {
@@ -383,7 +510,7 @@
         .footer-logo:hover {
             transform: scale(1.1);
             filter: grayscale(0%) contrast(1.1);
-            box-shadow: 0 0 25px rgba(255, 42, 75, 0.8);
+            box-shadow: 0 0 25px rgba(255, 51, 153, 0.8);
         }
 
     </style>
@@ -395,13 +522,13 @@
         <header>
             <div class="brand">AXS Music Studio</div>
             <div class="brand-subtitle">美学 × 系统</div>
-            <h1>制作全案</h1>
+            <h1>声学工程全案</h1>
         </header>
 
         <div class="meta-card">
             <div class="meta-item">
                 <div class="meta-label">致尊敬的客户</div>
-                <div class="meta-value">张阿</div>
+                <div class="meta-value">张先生</div>
             </div>
             <div class="meta-item">
                 <div class="meta-label">项目曲名</div>
@@ -410,31 +537,31 @@
         </div>
 
         <section>
-            <h2>序言：潜入无光之域</h2>
+            <h2>序言：表单观测报告</h2>
             <p>张先生，您好。</p>
             <br>
-            <p>我们收到了您的委托表单。您所传达的那种被钢铁森林吞噬的失重感、想要逃离社会既定齿轮的隐忍挣扎，以及在无光废墟里的无声呐喊，深深击中了我们。</p>
-            <p>一首真正的歌，绝不是用合成器堆砌出来的，而是用这种极具压迫感的情感血肉磨出来的。在过去的 48 小时里，AXS 音乐重工业基地的 15 位虚拟专家为您召开了三轮闭门会议。以下是我们为您出具的最终制作全案。</p>
+            <p>已确认接收您的委托与情绪诉求。在拆解您的歌词文本时，我们精准捕捉到了您想表达的核心痛点：一种在现代都市高压下，想要挣脱却又感到无力的“失重感”。</p>
+            <p>顶级的音乐制作，不只是简单的声学排列，更是用极致的听觉武器来为您释放这种压抑。基于此，在过去48小时内，AXS 全球风向嗅探系统与预测分析师联合15位核心专家矩阵，为您进行了三轮高密度的闭门推演。我们滤除了常规商业流行乐中刻意的讨好感，为您量身定制了这套极具力量感的声学架构。以下是您的最终交付案。</p>
         </section>
 
         <section>
-            <h2>🎼 壹：物理对标与声学底色 <span class="badge">The Blueprint</span></h2>
-            <p>为了承载您那种“压抑到极点后的爆发”，我们调取了全球工业摇滚与暗黑流行榜单排行前十的数首白金级金曲作为声学对标，为您锁死了两大物理常数：</p>
+            <h2>🎼 壹：物理对标 <span class="badge">Acoustic Blueprint</span></h2>
+            <p>为了精确承载您所需求的“压抑释放”，我们在声学分析矩阵中调取了全球工业摇滚与暗黑流行榜单排行前十的数首白金级金曲作为参考底本。基于深度的波形比对，我们为您锁死了以下核心工程参数：</p>
             <br>
             <ul>
-                <li><strong>节拍 (105 BPM)</strong>：这比人的正常心跳略快，像是在极度焦虑下的喘息频率。</li>
-                <li><strong>调性 (D Minor)</strong>：这是古典乐中最适合表达悲剧英雄感与宿命感的调性。</li>
-                <li><strong>参考方向</strong>：<span class="highlight">The Weeknd</span> 的电子质感 + <span class="highlight">Nine Inch Nails</span> 的暗黑工业感。</li>
-                <li><strong>参考和弦</strong>：主歌 <code>Dm9 - Bbmaj7 - F - C</code>（压抑失重） | 副歌 <code>Dm - Bb - C - Am</code>（硬派悲剧）。</li>
+                <li><strong>时值模型 (105 BPM)</strong>：该频次高于人类静息心率均值，在听觉潜意识层面强制注入一种微量的焦虑与喘息感。</li>
+                <li><strong>色彩基底 (D Minor)</strong>：采用声学上极具收敛性与宿命感的 D 小调构建基础和声场，拒绝廉价的明亮色彩。</li>
+                <li><strong>质感映射</strong>：<span class="highlight">The Weeknd</span> 体系的高光泽电子空间 + <span class="highlight">Nine Inch Nails</span> 级的非线性工业失真。</li>
+                <li><strong>和声架构</strong>：主歌 <code>Dm9 - Bbmaj7 - F - C</code>（构建听觉悬浮与失重） | 副歌 <code>Dm - Bb - C - Am</code>（刚性下行释放）。</li>
             </ul>
         </section>
 
         <section>
-            <h2>✒️ 贰：词作大赏 <span class="badge">The Lyrics</span></h2>
-            <p>为了保留您心底最原始的呼喊，我们采用了极具杀伤力的 <strong>[Hook 先置] 倒叙结构</strong>。伴奏响起的第一秒，就是对这个世界的当头暴击。</p>
+            <h2>✒️ 贰：文本阵列 <span class="badge">Narrative Matrix</span></h2>
+            <p>为最大化文字的心理穿透力，我们舍弃了传统的铺垫，采用 <strong>[Hook 前置] 的侵入式结构</strong>。在声波切入的第一秒，即完成对听觉阈值的破防。</p>
             
             <div class="lyrics-box">
-<div style="text-align: center; font-size: 1.6rem; font-weight: bold; color: var(--primary-color); margin-bottom: 30px; letter-spacing: 3px; text-shadow: 0 0 10px rgba(255,42,75,0.6);">《 gei'ta'dao'le'ma 》</div>
+<div class="stroked-title">《 gei'ta'dao'le'ma 》</div>
 
 <strong>[副歌 / 双人合唱 —— 开篇即高潮]</strong>
 gei ta dao le ma
@@ -471,56 +598,88 @@ I say “I’m fine”
         </section>
 
         <section>
-            <h2>🎛️ 叁：工业级编曲与混音预告 <span class="badge">The Production</span></h2>
+            <h2>🎛️ 叁：声学工程与母带解析 <span class="badge">Engineering & Mastering</span></h2>
+            
+            <div style="background: rgba(255, 51, 153, 0.05); border-left: 3px solid var(--primary-color); padding: 15px 20px; margin: 20px 0; border-radius: 0 4px 4px 0;">
+                <p style="margin: 0; color: #eee; font-size: 0.95rem; line-height: 1.8; letter-spacing: 1px; font-weight: 300;">
+                    <strong style="color: var(--primary-color); font-weight: 600; font-size: 1.05rem; letter-spacing: 2px;">[ 国际级声学专家矩阵护航 ]</strong><br>
+                    AXS 音乐工业基地由特聘的【全球音乐风向嗅探与预测分析师】领衔，并与多位拥有全球化视野的资深混音/母带专家联合阵列。结合内部高阶的非线性 DSP 处理链与精准的声学建模，我们的专家组对本案的每一轨声波进行了微米级的频段切削与瞬态包络重塑 (Transient Shaping)。我们承诺，最终交付的母带将突破常规动态限制，为您呈现出白金发行级的工业压迫感与无懈可击的全景空间。
+                </p>
+            </div>
+
             <ul>
-                <li><strong>开篇副歌 [爆发/释放]</strong>：厚重的电吉他音墙砸下，叠加 Prophet-5 合成器的撕裂铺底。</li>
-                <li><strong>主歌 [小律动]</strong>：Moog 模拟低音脉冲与 LinnDrum 鼓机交织，提供克制律动。</li>
-                <li><strong>双人声处理</strong>：Rap 极度贴耳 (Close-mic'd)，合唱则用宽阔的厅堂混响 (Large Hall Reverb) 撕开空间。</li>
-                <li><strong>母带压迫</strong>：最极端的纽约式并联压缩，母带响度硬顶到恐怖的 <span class="highlight">-8 LUFS</span>。</li>
+                <li><strong>爆裂层 [主频段填充]</strong>：启用模拟失真阵列驱动的电吉他音墙，叠加复刻版 Prophet-5 硬件合成器的锯齿波铺底。</li>
+                <li><strong>骨架层 [极低频下潜]</strong>：Moog 模拟贝斯与深度采样的 LinnDrum 鼓机交织，构建极其克制且深邃的下潜律动 (Sub-bass)。</li>
+                <li><strong>人声空间化 [深度分层]</strong>：Rap 轨采用超近场收音 (Close-mic'd) 处理制造耳畔剥离感；副歌则推送至非线性厅堂混响 (Large Hall Reverb) 中撕裂空间。</li>
+                <li><strong>母带响度协议</strong>：介入侵略性极强的多段并联压缩，将峰值响度指标强行推升至标杆级的 <span class="highlight">-8 LUFS</span>。</li>
             </ul>
         </section>
 
         <section>
-            <h2>🎧 肆：成品demo听审预演 <span class="badge">Demo Preview</span></h2>
-            <p>我们为您生成了多个音频版本，您可以直接点击下方播放器进行试听。建议佩戴高品质耳机以感受极端的低频下潜与压迫感。</p>
+            <h2>🎧 肆 Demo 听审预演 <span class="badge">Audition System</span></h2>
+            <p>声学渲染已完成初步导出。请点击下方控制台进行试听鉴别。系统强烈建议您接入高解析度监听设备，以完整接收下潜极深的低频能量场。</p>
             
             <div class="audio-player">
-                <h4>▶ 方案A：标准暗黑工业版 (推荐听审)</h4>
+                <h4>▶ 方案A：基准暗黑工业版 (推荐鉴定)</h4>
                 <audio src="./audio/gtdlm.mp3"></audio>
                 <div class="custom-player">
                     <button class="play-btn">▶</button>
+                    <!-- 优化项2：波形联动 -->
+                    <div class="waveform">
+                        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                    </div>
                     <div class="progress-container"><div class="progress-bar"></div></div>
                     <div class="time-display">0:00</div>
+                    <!-- 优化项3：音量控制滑块 -->
+                    <input type="range" class="volume-slider" min="0" max="1" step="0.01" value="1">
                 </div>
             </div>
             
             <div class="audio-player">
-                <h4>▶ 方案B：极简金属版 (完美复刻结构)</h4>
+                <h4>▶ 方案B：刚性极简金属版 (保留骨架结构)</h4>
                 <audio src="./audio/gtdlm_m.mp3"></audio>
                 <div class="custom-player">
                     <button class="play-btn">▶</button>
+                    <!-- 优化项2：波形联动 -->
+                    <div class="waveform">
+                        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                    </div>
                     <div class="progress-container"><div class="progress-bar"></div></div>
                     <div class="time-display">0:00</div>
+                    <!-- 优化项3：音量控制滑块 -->
+                    <input type="range" class="volume-slider" min="0" max="1" step="0.01" value="1">
                 </div>
             </div>
 
             <div class="audio-player">
-                <h4>▶ 方案C：重型合成器波版 (警告：调性偏离大调)</h4>
+                <h4>▶ 方案C：重型 Synthwave 畸变版 (警告：高频侵略性强)</h4>
                 <audio src="./audio/buyonglache.mp3"></audio>
                 <div class="custom-player">
                     <button class="play-btn">▶</button>
+                    <!-- 优化项2：波形联动 -->
+                    <div class="waveform">
+                        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                    </div>
                     <div class="progress-container"><div class="progress-bar"></div></div>
                     <div class="time-display">0:00</div>
+                    <!-- 优化项3：音量控制滑块 -->
+                    <input type="range" class="volume-slider" min="0" max="1" step="0.01" value="1">
                 </div>
             </div>
 
-            <div class="audio-player" style="border-color: rgba(255, 42, 75, 0.5);">
-                <h4 style="color: var(--primary-color);">▶ 方案D：流行弱化版 (拦截：物理失格)</h4>
+            <div class="audio-player" style="border-color: rgba(255, 51, 153, 0.5);">
+                <h4 class="stroked-h4">▶ 方案D：商业流行弱化版 (警告：能量指标失格)</h4>
                 <audio src="./audio/gtdlm_pop.mp3"></audio>
                 <div class="custom-player">
                     <button class="play-btn">▶</button>
+                    <!-- 优化项2：波形联动 -->
+                    <div class="waveform">
+                        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                    </div>
                     <div class="progress-container"><div class="progress-bar"></div></div>
                     <div class="time-display">0:00</div>
+                    <!-- 优化项3：音量控制滑块 -->
+                    <input type="range" class="volume-slider" min="0" max="1" step="0.01" value="1">
                 </div>
             </div>
         </section>
@@ -539,20 +698,27 @@ I say “I’m fine”
             const progressContainer = container.querySelector('.progress-container');
             const timeDisplay = container.querySelector('.time-display');
 
+            const waveform = container.querySelector('.waveform');
+            const volumeSlider = container.querySelector('.volume-slider');
+
             playBtn.addEventListener('click', () => {
                 if(audio.paused) {
                     document.querySelectorAll('audio').forEach(a => {
                         if(a !== audio) {
                             a.pause();
                             const btn = a.parentElement.querySelector('.play-btn');
+                            const wf = a.parentElement.querySelector('.waveform');
                             if(btn) btn.innerHTML = '▶';
+                            if(wf) wf.classList.remove('playing');
                         }
                     });
                     audio.play();
                     playBtn.innerHTML = '⏸';
+                    if(waveform) waveform.classList.add('playing');
                 } else {
                     audio.pause();
                     playBtn.innerHTML = '▶';
+                    if(waveform) waveform.classList.remove('playing');
                 }
             });
 
@@ -574,10 +740,29 @@ I say “I’m fine”
                 audio.currentTime = pos * audio.duration;
             });
 
+            /* 优化项3：音量控制事件绑定 */
+            if(volumeSlider) {
+                volumeSlider.addEventListener('input', (e) => {
+                    audio.volume = e.target.value;
+                });
+            }
+
+            /* 优化项4：缓冲加载状态事件监听 */
+            audio.addEventListener('waiting', () => {
+                playBtn.innerHTML = '⟳';
+                playBtn.style.animation = 'spin 1s linear infinite';
+            });
+
+            audio.addEventListener('canplay', () => {
+                playBtn.style.animation = 'none';
+                playBtn.innerHTML = audio.paused ? '▶' : '⏸';
+            });
+
             audio.addEventListener('ended', () => {
                 playBtn.innerHTML = '▶';
                 progressBar.style.width = '0%';
                 timeDisplay.textContent = '0:00';
+                if(waveform) waveform.classList.remove('playing');
             });
         });
     </script>
