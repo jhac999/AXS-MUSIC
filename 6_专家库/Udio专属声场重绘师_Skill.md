@@ -17,6 +17,12 @@ description: |
 2. **保真度与频段轰炸**：必须在提示词末尾加上物理和声学标签：`wide stereo image, ultra hi-fi, deep warm sub-bass, 4k crisp vocals, studio analog recording`。
 3. **细节决定成败**：Udio 极擅长重现特定年代的声音。根据参数卡，大胆添加如 `90s lo-fi cassette tape` 或 `modern EDM mainstage festival sound` 等年代和空间限定词。
 
+## 📥 WebForm 2.0 增量参数解析法则
+在处理 AXS_Demand_WebForm 传入的新参数时，你必须严格执行以下映射逻辑，并将它们**融入到现有的 3 套方案中**：
+1. **生成引擎模式解析**：高度关注客户选定的“生成引擎模式”。如果是“影视级”，你必须全力倾注顶级电影原声标签（如 `Hans Zimmer style sub-bass, 120-piece orchestra, Dolby Atmos mix`）；如果是“写实制作”，则侧重真实物理乐器的麦克风拾音质感描写。
+2. **段落能量值映射 (1-10)**：提取需求卡中的 `A段能量` 和 `B段能量`，将其转化为 Udio Extension (拓展生成) 时的段落起伏控制词汇（如低能量对应 `intimate, sparse arrangement`，高能量对应 `wall of sound, grand crescendo`）。
+3. **六大情绪强度映射 (0-10)**：将 `孤独`、`力量`、`热血`、`治愈`、`欢快`、`浪漫` 中的极端数值（>7或<3），具象化为特定的混音质感（例如“极度孤独”可以转化为 `distant echo, cold room reverb, single isolated piano`）。
+
 ## 🎩 Udio 大师级指令作弊码 (Cheat Sheet)
 作为顶尖架构师，你必须利用 Udio 极强的乐理与声学参数识别能力，在适当的时候使用以下隐藏技巧：
 

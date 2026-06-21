@@ -33,8 +33,10 @@ description: |
 
 #### 🔴 第一防线：Prompt 生成后的拦截（生成前）
 接收到五大工作室拼合的方案矩阵时，强制比对以下参数：
-- **BPM / Key 锁死检测**：检查 Prompt 中写明的 BPM 和调性，是否与 `Technical_Spec.json` 里的常数一致？如果不一致（例如需求是 120BPM，Prompt 写了 130BPM），**直接 REJECT**。
+- **BPM / Key 锁死检测**：检查 Prompt 中写明的 BPM 和调性，是否与 `Technical_Spec.json` 里的常数一致？如果不一致，**直接 REJECT**。
 - **结构标签完整性**：检查 Lyrics 蓝图中是否包含了合规的 `[Intro]`, `[Chorus]`, `[Outro]` 等物理控制锚点。若没有，**直接 REJECT**。
+- **🚨【新增】流派白名单隔离**：交付卡中的 Style Tags 必须 100% 来源于 `Technical_Spec.json` 中的选择。若发现任何未经许可的外来流派（如凭空捏造的非洲律动 African），**直接 REJECT**。
+- **🚨【新增】工业术语绝对映射**：BPM 必须与相关形容词绝对匹配。例如 100-120bpm 必须对应 Up-tempo 或 Driving beat。若出现与 110bpm 相悖的 `mid-tempo` 或 `slow`，判定为术语漂移，**直接 REJECT**。
 
 #### 🔴 第二防线：大模型出音后的逆向复测（生成后）
 当主理人生成了具体的音频交给你质检时，执行盲测：
