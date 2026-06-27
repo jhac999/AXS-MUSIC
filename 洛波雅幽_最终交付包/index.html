@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AXS MUSIC STUDIO - 全案汇报书 (奥杰阿格)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #050505;
+            --panel-bg: rgba(25, 20, 15, 0.7);
+            --primary-color: #ff8c00; /* 大凉山火焰橘黄 */
+            --text-main: #e0e0e0;
+            --text-muted: #888;
+            --glass-border: 1px solid rgba(255, 140, 0, 0.2);
+            --glow: 0 0 15px rgba(255, 140, 0, 0.4);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            background-image: 
+                linear-gradient(to bottom, rgba(10, 8, 5, 0.7) 0%, rgba(5, 5, 5, 0.95) 100%),
+                url('./ethnic_fire_totem.png'),
+                radial-gradient(circle at 50% 20%, rgba(255, 100, 0, 0.15), transparent 40%),
+                radial-gradient(circle at 85% 30%, rgba(200, 100, 0, 0.05), transparent 25%);
+            background-size: 100% 100%, cover, auto, auto;
+            background-position: center, top center, center, center;
+            background-attachment: fixed;
+            background-blend-mode: normal, overlay, normal, normal;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .brand {
+            font-family: 'Cinzel', serif;
+            font-size: 2.4rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #fff;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+        }
+
+        .brand-subtitle {
+            font-family: "Songti SC", "SimSun", serif;
+            font-size: 0.95rem;
+            font-weight: 900;
+            letter-spacing: 14px;
+            margin-left: 14px;
+            color: var(--primary-color);
+            text-shadow: 
+                0 0 5px rgba(255, 140, 0, 0.8),
+                0 0 15px rgba(255, 70, 0, 0.9),
+                0 0 30px rgba(200, 0, 0, 0.6);
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-family: "Songti SC", "SimSun", serif;
+            font-size: 2.8rem;
+            font-weight: 400;
+            letter-spacing: 8px;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #fff, #ddd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .meta-card {
+            background: var(--panel-bg);
+            backdrop-filter: blur(10px);
+            border: var(--glass-border);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 40px;
+            box-shadow: var(--glow);
+            transition: box-shadow 0.4s ease, transform 0.4s ease;
+        }
+
+        .meta-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(255, 140, 0, 0.6);
+        }
+
+        .meta-item {
+            text-align: center;
+        }
+
+        .meta-label {
+            font-size: 1rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .meta-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #fff;
+            margin-top: 8px;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255,255,255,0.2);
+        }
+
+        section {
+            background: var(--panel-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        section:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 140, 0, 0.5);
+            box-shadow: 0 10px 30px rgba(255, 140, 0, 0.15), inset 0 0 15px rgba(255, 140, 0, 0.05);
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 20px;
+            background: var(--primary-color);
+            border-radius: 2px;
+            box-shadow: var(--glow);
+        }
+
+        .highlight {
+            color: var(--primary-color);
+            font-weight: 800;
+            text-shadow: 0 0 10px rgba(255, 140, 0, 0.4);
+        }
+
+        .audio-player {
+            margin-top: 20px;
+            background: rgba(0,0,0,0.5);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        .audio-player:hover {
+            background: rgba(25, 15, 10, 0.8);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px rgba(255, 140, 0, 0.3);
+            transform: scale(1.02);
+        }
+
+        .audio-player h4 {
+            margin-bottom: 10px;
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        .custom-player {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .play-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 15px rgba(255, 140, 0, 0.6);
+            transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+            flex-shrink: 0;
+        }
+        .play-btn:hover {
+            transform: scale(1.1);
+            background: #ffb14a;
+            box-shadow: 0 0 25px rgba(255, 140, 0, 0.9);
+        }
+        .progress-container {
+            flex-grow: 1;
+            background: rgba(255,255,255,0.1);
+            height: 6px;
+            border-radius: 3px;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+        }
+        .progress-bar {
+            height: 100%;
+            background: var(--primary-color);
+            width: 0%;
+            transition: width 0.1s linear;
+            box-shadow: 0 0 10px rgba(255, 140, 0, 0.8);
+        }
+        .time-display {
+            font-size: 0.85rem;
+            color: #ccc;
+            min-width: 45px;
+            text-align: right;
+            font-family: monospace;
+        }
+
+        .waveform {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            height: 20px;
+            margin: 0 10px;
+            opacity: 0.3;
+            transition: opacity 0.3s;
+        }
+        .waveform.playing {
+            opacity: 1;
+        }
+        .waveform.playing .wave-bar {
+            animation-play-state: running;
+        }
+        .wave-bar {
+            width: 3px;
+            background: var(--primary-color);
+            border-radius: 2px;
+            animation: bounce 1s infinite ease-in-out;
+            animation-play-state: paused;
+        }
+        .wave-bar:nth-child(1) { height: 40%; animation-delay: -1.2s; }
+        .wave-bar:nth-child(2) { height: 80%; animation-delay: -0.9s; }
+        .wave-bar:nth-child(3) { height: 100%; animation-delay: -0.6s; }
+        .wave-bar:nth-child(4) { height: 60%; animation-delay: -0.3s; }
+        .wave-bar:nth-child(5) { height: 80%; animation-delay: 0s; }
+
+        @keyframes bounce {
+            0%, 100% { transform: scaleY(0.4); }
+            50% { transform: scaleY(1); }
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .badge {
+            background: var(--primary-color);
+            color: #050505;
+            padding: 2px 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 900;
+            border: none;
+            vertical-align: middle;
+            margin-left: 10px;
+            box-shadow: 0 0 10px rgba(255, 140, 0, 0.5);
+            letter-spacing: 1px;
+        }
+
+        .boss-watermark {
+            position: fixed;
+            bottom: -50px;
+            right: -50px;
+            width: 450px;
+            height: 450px;
+            background-image: url('./boss_new.jpg');
+            background-size: cover;
+            background-position: center 20%;
+            opacity: 0.1;
+            pointer-events: none;
+            filter: grayscale(100%) sepia(50%) hue-rotate(5deg) contrast(1.4) drop-shadow(0 0 20px var(--primary-color));
+            mask-image: radial-gradient(circle at center, black 40%, transparent 70%);
+            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 70%);
+            z-index: 0;
+            animation: breathe 8s infinite alternate ease-in-out;
+            will-change: transform, opacity;
+        }
+
+        @keyframes breathe {
+            0% { opacity: 0.08; transform: scale(1); }
+            100% { opacity: 0.15; transform: scale(1.02); }
+        }
+
+        .volume-slider {
+            -webkit-appearance: none;
+            width: 60px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            outline: none;
+            margin-left: 10px;
+            transition: all 0.3s;
+        }
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(255, 140, 0, 0.6);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .ajag-photo {
+            position: fixed;
+            top: 50%;
+            left: 5%;
+            transform: translateY(-50%);
+            width: 320px;
+            height: 480px;
+            background-image: url('./ajag_photo.png');
+            background-size: cover;
+            background-position: center;
+            border-radius: 12px;
+            border: var(--glass-border);
+            box-shadow: 0 0 40px rgba(255, 140, 0, 0.2);
+            z-index: 0;
+            opacity: 0.85;
+            transition: all 0.5s ease;
+            filter: grayscale(20%) contrast(1.1);
+        }
+
+        .ajag-photo:hover {
+            opacity: 1;
+            filter: grayscale(0%) contrast(1.2);
+            box-shadow: 0 0 60px rgba(255, 140, 0, 0.5);
+            transform: translateY(-50%) scale(1.02);
+        }
+
+        @media (max-width: 1500px) and (min-width: 769px) {
+            .ajag-photo {
+                opacity: 0.15;
+                left: -50px;
+                filter: grayscale(100%) sepia(30%) hue-rotate(5deg) contrast(1.2);
+                z-index: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .ajag-photo {
+                position: relative;
+                top: auto;
+                left: auto;
+                transform: none;
+                width: 160px;
+                height: 160px;
+                margin: 40px auto 10px auto;
+                border-radius: 50%;
+                opacity: 1;
+                filter: grayscale(10%) contrast(1.1);
+                box-shadow: 0 0 25px rgba(255, 140, 0, 0.4);
+                z-index: 2;
+            }
+            .container {
+                padding-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="boss-watermark"></div>
+    <div class="ajag-photo"></div>
+    <div class="container">
+        <header>
+            <div class="brand">AXS Music Studio</div>
+            <div class="brand-subtitle">大凉山 × 全球律动</div>
+            <h1>制作全案</h1>
+        </header>
+
+        <div class="meta-card">
+            <div class="meta-item">
+                <div class="meta-label">致尊敬的客户</div>
+                <div class="meta-value">奥杰阿格 (ajag)</div>
+            </div>
+            <div class="meta-item">
+                <div class="meta-label">项目曲名</div>
+                <div class="meta-value">《洛波雅幽》</div>
+            </div>
+        </div>
+
+        <section>
+            <h2>序言：大凉山与世界的碰撞</h2>
+            <p>阿格老师，您好。</p>
+            <br>
+            <p>我们认真研究了您留下的《洛波雅幽》原始音频。您的沙哑嗓音里，藏着大凉山最粗粝的泥土味与风霜。所以，我们没有把它当做一首简单的“地方民谣”去处理。我们要帮您打的，是一场“洗脏水换高奢”的硬仗。</p>
+            <p>在过去的 48 小时里，AXS 重工业基地的专家组，用几百上千万的工业管线，为您这首歌做了一次极其残酷的“雷鬼基因国际化升级”。</p>
+            <p>以下是我们为您出具的最终制作全案。</p>
+        </section>
+
+        <section>
+            <h2>🎼 壹：四大核武器矩阵 <span class="badge">The Blueprint</span></h2>
+            <p>为了保证您的作品能在不同市场大开杀戒，我们没有只给一个伴奏。我们动用多模型矩阵，为您产出了 4 个截然不同、却同样致命的究极版本：</p>
+            <br>
+            <ul>
+                <li><strong>👑 方案 A：【国内常规下沉版】</strong>：对律动进行了工业级的重塑与优化，保留了原声的高识别度，适合在快手/抖音发歌稳住中年粉丝基本盘。</li>
+                <li><strong>🌍 方案 B：【英文出海专线】</strong>：<span class="highlight">测算出神级的 112 BPM 黄金慵懒参数！</span>完美化学反应，听起来就像是格莱美级别的西非/牙买加国际老炮，直击 TikTok 欧美盘。</li>
+                <li><strong>🚀 方案 C：【万人下沉裂变】</strong>：120BPM House 沉重鼓点！专攻国内广场舞病毒传播。</li>
+                <li><strong>⚔️ 方案 D：【高奢核爆杀手锏】</strong>：极具撕裂感的合成器重低音（Sub Bass）如同重金属般砸下，搭配极其宏大的<span class="highlight">大凉山部落男声大合唱</span>！用您最原生的声音，硬碰赛博时代的重工业。</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>🎛️ 贰：工业级混音工艺预告 <span class="badge">The Production</span></h2>
+            
+            <div style="background: rgba(255, 140, 0, 0.05); border-left: 3px solid var(--primary-color); padding: 15px 20px; margin: 20px 0; border-radius: 0 4px 4px 0;">
+                <p style="margin: 0; color: #eee; font-size: 0.95rem; line-height: 1.8; letter-spacing: 1px; font-weight: 300;">
+                    <strong style="color: var(--primary-color); font-weight: 600; font-size: 1.05rem; letter-spacing: 2px;">[ 国际级声学专家矩阵护航 ]</strong><br>
+                    在您最终拍板方案后，我们将进入后期的母带与混音工艺。我们向您承诺以下“物理级底线”：绝对的泥土感防线（不使用廉价的黄铜管乐，以有机木质乐器驱动）、硬件级的深沉下潜（为 Afro-Fusion 录音室增强极具压迫感的低频）、以及最贴耳的气声和混响。
+                </p>
+            </div>
+        </section>
+
+        <section>
+            <h2>🎧 叁：demo听审预演 <span class="badge">Demo Preview</span></h2>
+            <p>一切的决策权，在这 4 份音乐风格中。请您带上耳机，听完后告诉我们，您选哪一首？</p>
+            
+            <div class="audio-player">
+                <h4>▶ 方案 A：国内常规下沉版 (旋律微调版)</h4>
+                <audio src="./audio/melody.mp3"></audio>
+                <div class="custom-player">
+                    <button class="play-btn">▶</button>
+                    <div class="waveform">
+                        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                    </div>
+                    <div class="progress-container"><div class="progress-bar"></div></div>
+                    <div class="time-display">0:00</div>
+                    <input type="range" class="volume-slider" min="0" max="1" step="0.01" value="1">
+                </div>
+                <p style="margin-top: 15px; font-size: 0.85rem; color: #aaa; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px; line-height: 1.5;"><strong>[定位指南]</strong> 对律动进行了工业级的重塑与优化，保留了原声的高识别度，适合在快手/抖音发歌稳住中年粉丝基本盘。</p>
+            </div>
+            
+            <div class="audio-player">
+                <h4>▶ 方案 B：英文出海专线 (Afro-Fusion版)</h4>
+                <audio src="./audio/english.mp3"></audio>
+                <div class="custom-player">
+                    <button class="play-btn">▶</button>
+                    <div class="waveform">
+                        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                    </div>
+                    <div class="progress-container"><div class="progress-bar"></div></div>
+                    <div class="time-display">0:00</div>
+                    <input type="range" class="volume-slider" min="0" max="1" step="0.01" value="1">
+                </div>
+                <p style="margin-top: 15px; font-size: 0.85rem; color: #aaa; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px; line-height: 1.5;"><strong>[定位指南]</strong> <span class="highlight">测算出神级的 112 BPM 黄金慵懒参数！</span>完美化学反应，听起来就像是格莱美级别的西非/牙买加国际老炮，直击 TikTok 欧美盘。</p>
+            </div>
+
+            <div class="audio-player">
+                <h4>▶ 方案 C：万人下沉裂变 (Epic Afro-House 部落版)</h4>
+                <audio src="./audio/house.mp3"></audio>
+                <div class="custom-player">
+                    <button class="play-btn">▶</button>
+                    <div class="waveform">
+                        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                    </div>
+                    <div class="progress-container"><div class="progress-bar"></div></div>
+                    <div class="time-display">0:00</div>
+                    <input type="range" class="volume-slider" min="0" max="1" step="0.01" value="1">
+                </div>
+                <p style="margin-top: 15px; font-size: 0.85rem; color: #aaa; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px; line-height: 1.5;"><strong>[定位指南]</strong> 120BPM House 沉重鼓点！专攻国内广场舞病毒传播。</p>
+            </div>
+
+            <div class="audio-player" style="border-color: rgba(255, 140, 0, 0.5);">
+                <h4 style="color: var(--primary-color);">▶ 方案 D：高奢核爆杀手锏 (工业雷鬼电音部落)</h4>
+                <audio src="./audio/reggae.mp3"></audio>
+                <div class="custom-player">
+                    <button class="play-btn">▶</button>
+                    <div class="waveform">
+                        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                    </div>
+                    <div class="progress-container"><div class="progress-bar"></div></div>
+                    <div class="time-display">0:00</div>
+                    <input type="range" class="volume-slider" min="0" max="1" step="0.01" value="1">
+                </div>
+                <p style="margin-top: 15px; font-size: 0.85rem; color: #aaa; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px; line-height: 1.5;"><strong>[定位指南]</strong> 极具撕裂感的合成器重低音（Sub Bass）如同重金属般砸下，搭配极其宏大的<span class="highlight">大凉山部落男声大合唱</span>！用您最原生的声音，硬碰赛博时代的重工业。</p>
+            </div>
+        </section>
+
+        <footer style="text-align: center; margin-top: 60px; padding-bottom: 40px; color: var(--text-muted); font-size: 0.9rem;">
+            <p style="color: #fff; font-weight: bold; letter-spacing: 3px;">AXS MUSIC STUDIO</p>
+            <p style="margin-top: 5px; opacity: 0.6; font-family: monospace;">[ AFRO-FUSION / EPIC HOUSE / REGGAE ]</p>
+        </footer>
+    </div>
+    <script>
+        document.querySelectorAll('.audio-player').forEach(container => {
+            const audio = container.querySelector('audio');
+            const playBtn = container.querySelector('.play-btn');
+            const progressBar = container.querySelector('.progress-bar');
+            const progressContainer = container.querySelector('.progress-container');
+            const timeDisplay = container.querySelector('.time-display');
+            const waveform = container.querySelector('.waveform');
+            const volumeSlider = container.querySelector('.volume-slider');
+
+            playBtn.addEventListener('click', () => {
+                if(audio.paused) {
+                    document.querySelectorAll('audio').forEach(a => {
+                        if(a !== audio) {
+                            a.pause();
+                            const btn = a.parentElement.querySelector('.play-btn');
+                            const wf = a.parentElement.querySelector('.waveform');
+                            if(btn) btn.innerHTML = '▶';
+                            if(wf) wf.classList.remove('playing');
+                        }
+                    });
+                    audio.play();
+                    playBtn.innerHTML = '⏸';
+                    if(waveform) waveform.classList.add('playing');
+                } else {
+                    audio.pause();
+                    playBtn.innerHTML = '▶';
+                    if(waveform) waveform.classList.remove('playing');
+                }
+            });
+
+            audio.addEventListener('timeupdate', () => {
+                if(!audio.duration) return;
+                const percent = (audio.currentTime / audio.duration) * 100;
+                progressBar.style.width = percent + '%';
+                
+                let currentMins = Math.floor(audio.currentTime / 60);
+                let currentSecs = Math.floor(audio.currentTime % 60);
+                if(currentSecs < 10) currentSecs = '0' + currentSecs;
+                timeDisplay.textContent = `${currentMins}:${currentSecs}`;
+            });
+
+            progressContainer.addEventListener('click', (e) => {
+                if(!audio.duration) return;
+                const rect = progressContainer.getBoundingClientRect();
+                const pos = (e.clientX - rect.left) / rect.width;
+                audio.currentTime = pos * audio.duration;
+            });
+
+            if(volumeSlider) {
+                volumeSlider.addEventListener('input', (e) => {
+                    audio.volume = e.target.value;
+                });
+            }
+
+            audio.addEventListener('waiting', () => {
+                playBtn.innerHTML = '⟳';
+                playBtn.style.animation = 'spin 1s linear infinite';
+            });
+
+            audio.addEventListener('canplay', () => {
+                playBtn.style.animation = 'none';
+                playBtn.innerHTML = audio.paused ? '▶' : '⏸';
+            });
+
+            audio.addEventListener('ended', () => {
+                playBtn.innerHTML = '▶';
+                progressBar.style.width = '0%';
+                timeDisplay.textContent = '0:00';
+                if(waveform) waveform.classList.remove('playing');
+            });
+        });
+    </script>
+</body>
+</html>
